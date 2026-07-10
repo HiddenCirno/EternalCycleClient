@@ -17,4 +17,9 @@ namespace EternalCycleClient
         [JsonProperty("filesToUpdate")]
         public Dictionary<string, string> FilesToUpdate { get; set; } = new Dictionary<string, string>();
     }
+    public class VoiceResourceRequest
+    {
+        [JsonProperty("VoicePath")]
+        public Dictionary<string, string> VoicePath { get; set; } = new Dictionary<string, string>();
+    }
 }

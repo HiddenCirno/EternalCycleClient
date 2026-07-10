@@ -20,8 +20,15 @@ namespace EternalCycleClient
             var harmony = new Harmony(PluginsInfo.GUID);
             harmony.PatchAll();
             LocaleManager.Initialize(Config);
-            ClientResourceManager.SyncBundlesWithServer(pluginDir, "resource/cache/bundle");
+            ClientResourceManager.LoadResources("/eternalcycle/loadriglayout", pluginDir, "resource/cache/bundle");
+            ClientResourceManager.LoadResources("/eternalcycle/loadsloticon", pluginDir, "resource/cache/sloticon");
+            ClientResourceManager.LoadResources("/eternalcycle/loaddecoicon", pluginDir, "resource/cache/decoicon");
+            ClientResourceManager.LoadResources("/eternalcycle/loadtarget", pluginDir, "resource/cache/target");
             ClientResourceManager.LoadRigLayout(pluginDir, "resource/cache/bundle");
+            ClientResourceManager.LoadSlotIcon(pluginDir, "resource/cache/sloticon");
+            ClientResourceManager.LoadDecoIcon(pluginDir, "resource/cache/decoicon");
+            ClientResourceManager.LoadTarget(pluginDir, "resource/cache/target");
+            ClientResourceManager.LoadVoice("/eternalcycle/loadvoice");
         }
 
         public void Start()
