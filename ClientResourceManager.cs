@@ -162,9 +162,9 @@ namespace EternalCycleClient
                 string fileName = Path.GetFileName(file).Replace(".png", "").Replace(".jpg", "");
                 CacheResourcesPopAbstractClass.Dictionary_0.Add($"Slots/{fileName}", fileName);
                 var sprite = TextureUtils.SimpleCreateSprite(TextureUtils.LoadFromFile(file, 1, 1), 100);
-                for (var i = 0; i < 20; i++)
+                for (var i = 0; i < 30; i++)
                 {
-                    CacheResourcesPopAbstractClass.Dictionary_0.Add($"Slots/{fileName}_00{i}", sprite);
+                    CacheResourcesPopAbstractClass.Dictionary_0.Add($"Slots/{fileName}_{i:D3}", sprite);
                 }
             }
         }
