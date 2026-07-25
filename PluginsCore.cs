@@ -1,5 +1,6 @@
 ﻿using BepInEx;
 using EFT;
+using EFT.InventoryLogic;
 using HarmonyLib;
 using System.IO;
 using System.Reflection;
@@ -12,6 +13,7 @@ namespace EternalCycleClient
         public static Player CorrectPlayer { get; set; }
         public static string CorrectGroupId { get; set; }
         public static GameWorld CorrectGameWorld { get; set; }
+        public static InventoryController StashController { get; set; }
 
         public static string dllPath = Assembly.GetExecutingAssembly().Location;
         public static string pluginDir = Path.GetDirectoryName(dllPath);
@@ -19,6 +21,7 @@ namespace EternalCycleClient
         {
             var harmony = new Harmony(PluginsInfo.GUID);
             harmony.PatchAll();
+            new EternalCycleItem.StashFeature.EternalCycleItemContext.SimpleContextMenu_Show_Patch().Enable();
             LocaleManager.Initialize(Config);
             ClientResourceManager.LoadResources("/eternalcycle/loadriglayout", pluginDir, "resource/cache/bundle");
             ClientResourceManager.LoadResources("/eternalcycle/loadsloticon", pluginDir, "resource/cache/sloticon");
