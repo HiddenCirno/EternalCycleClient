@@ -11,7 +11,7 @@ namespace EternalCycle
     public class DoorUnlockPatch
     {
         [HarmonyPostfix]
-        public static void Postfix(WorldInteractiveObject __instance, KeyComponent key, ref GStruct156<KeyInteractionResultClass> __result)
+        public static void Postfix(WorldInteractiveObject __instance, KeyComponent key, Player player, WorldInteractiveObject wio, ref GStruct156<KeyInteractionResultClass> __result)
         {
             // 1. 如果原版已经成功（真钥匙），或者因为技能不够（原版返回错误），直接跳过
             if (__result.Failed || __result.Value == null || __result.Value.Succeed)
