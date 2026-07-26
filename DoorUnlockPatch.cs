@@ -1,7 +1,6 @@
 ﻿using EFT;
 using EFT.Interactive;
 using EFT.InventoryLogic;
-using EternalCycleClient;
 using HarmonyLib;
 using ItemTransactionManagerResult = GStruct154<GClass3408>;
 
