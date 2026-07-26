@@ -13,7 +13,7 @@ using System.Text.RegularExpressions;
 using UnityEngine;
 
 
-namespace EternalCycleClient
+namespace EternalCycleClient.Utils
 {
     public class TextureUtils
     {

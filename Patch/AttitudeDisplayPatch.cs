@@ -3,7 +3,7 @@ using System.Text;
 using SkillEffect = GClass1443;
 
 
-namespace EternalCycleClient
+namespace EternalCycleClient.Patch
 {
     [HarmonyPatch(typeof(SkillEffect), "GetStringValue")]
     public class AttitudeDisplayPatch

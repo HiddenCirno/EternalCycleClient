@@ -3,7 +3,7 @@ using System;
 using System.Security.Cryptography;
 using System.Text;
 
-namespace EternalCycleClient
+namespace EternalCycleClient.Utils
 {
     /// <summary>
     /// MongoId的拓展方法类

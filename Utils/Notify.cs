@@ -1,6 +1,6 @@
 ﻿using EFT.Communications;
 
-namespace Oracle.Utils
+namespace EternalCycleClient.Utils
 {
     /// <summary>
     /// 二次封装的游戏内提示方法

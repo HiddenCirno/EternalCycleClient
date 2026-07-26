@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System.Collections.Generic;
 
-namespace EternalCycleClient
+namespace EternalCycleClient.Class
 {
     public class SyncResourceRequest
     {

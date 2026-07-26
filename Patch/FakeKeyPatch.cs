@@ -1,5 +1,4 @@
-﻿using ItemManager = GClass3380;
-using EFT;
+﻿using EFT;
 using EFT.Interactive;
 using EFT.InventoryLogic;
 using HarmonyLib;
@@ -7,7 +6,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 
 
-namespace EternalCycleClient
+namespace EternalCycleClient.Patch
 {
     [HarmonyPatch(typeof(PlayerOwner), "GetKey")]
     public class FakeKeyPatch
@@ -16,8 +15,7 @@ namespace EternalCycleClient
         public static bool Prefix(PlayerOwner __instance, WorldInteractiveObject worldInteractiveObject, ref KeyComponent __result)
         {
             // 获取所有符合条件的仿制钥匙
-            var fakekeys = ItemManager.GetItemComponentsInChildren<KeyComponent>(
-                __instance.Player.InventoryController.Inventory.Equipment,
+            var fakekeys = __instance.Player.InventoryController.Inventory.Equipment.GetItemComponentsInChildren<KeyComponent>(
                 onlyMerged: false
             ).Where(x =>
             {
@@ -45,8 +43,7 @@ namespace EternalCycleClient
                 .FirstOrDefault();
 
             // 普通钥匙匹配
-            var normalkey = ItemManager.GetItemComponentsInChildren<KeyComponent>(
-                __instance.Player.InventoryController.Inventory.Equipment,
+            var normalkey = __instance.Player.InventoryController.Inventory.Equipment.GetItemComponentsInChildren<KeyComponent>(
                 onlyMerged: false
                 )
                 .Where(x => x.Template.KeyId == worldInteractiveObject.KeyId) // 先筛选出正确的钥匙

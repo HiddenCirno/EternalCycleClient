@@ -1,4 +1,5 @@
 ﻿using EFT.UI.DragAndDrop;
+using EternalCycleClient.Class;
 using Newtonsoft.Json;
 using SPT.Common.Http;
 using System;
@@ -7,7 +8,7 @@ using System.IO;
 using System.Security.Cryptography;
 using UnityEngine;
 
-namespace EternalCycleClient
+namespace EternalCycleClient.Utils
 {
     public class ClientResourceManager
     {

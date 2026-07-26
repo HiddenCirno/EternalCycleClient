@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 
-namespace EternalCycleClient
+namespace EternalCycleClient.Utils
 {
     /// <summary>
     /// 本地化管理器

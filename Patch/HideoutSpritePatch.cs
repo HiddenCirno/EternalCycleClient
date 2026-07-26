@@ -1,29 +1,15 @@
 ﻿
-using Comfort.Common;
 using EFT;
 using EFT.Hideout;
-using EFT.Interactive;
-using EFT.InventoryLogic;
-using EFT.UI;
 using HarmonyLib;
-using Newtonsoft.Json;
-using SPT.Common.Http;
-using System;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Reflection;
-using System.Runtime.CompilerServices;
-using UI.Hideout;
 using UnityEngine;
-using UnityEngine.Windows;
 using ShootingRangeTargetResourceManager = GClass2421;
+using EternalCycleClient.Utils;
 
-namespace EternalCycleClient
+namespace EternalCycleClient.Patch
 {
     [HarmonyPatch(typeof(HideoutCustomizationIcons), nameof(HideoutCustomizationIcons.GetSprite))]
-    public class VulcanCore_GetSprite_Patch
+    public class HideoutGetSpritePatch
     {
         public static void Postfix(string id, ref Sprite __result)
         {
@@ -35,7 +21,7 @@ namespace EternalCycleClient
         }
     }
     [HarmonyPatch(typeof(ShootingRangeTargetResourceManager), nameof(ShootingRangeTargetResourceManager.method_2))]
-    public class VulcanCore_ShootingRangeTarget_Patch
+    public class ShootingRangeTargetPatch
     {
         public static bool Prefix(ShootingRangeTargetResourceManager __instance, ResourceKey resourceKey, EHideoutCustomizationType customizationType)
         {

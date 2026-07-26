@@ -4,6 +4,7 @@ using EFT.InventoryLogic;
 using HarmonyLib;
 using System.IO;
 using System.Reflection;
+using EternalCycleClient.Utils;
 
 namespace EternalCycleClient
 {

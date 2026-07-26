@@ -1,4 +1,4 @@
-﻿namespace EternalCycleClient
+﻿namespace EternalCycleClient.Utils
 {
     /// <summary>
     /// ConfigurationManager拓展

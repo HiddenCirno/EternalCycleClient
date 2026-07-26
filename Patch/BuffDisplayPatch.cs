@@ -4,7 +4,7 @@ using System.Text;
 using BuffEffect = GClass3019.GClass3044.GClass3045;
 
 
-namespace EternalCycleClient
+namespace EternalCycleClient.Patch
 {
     [HarmonyPatch(typeof(BuffEffect), "GetStringValue")]
     public class BuffDisplayPatch

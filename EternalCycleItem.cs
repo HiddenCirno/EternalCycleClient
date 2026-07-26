@@ -7,7 +7,6 @@ using EFT.InventoryLogic;
 using EFT.UI;
 using HarmonyLib;
 using Newtonsoft.Json;
-using Oracle.Utils;
 using SPT.Reflection.Patching;
 using System;
 using System.Collections.Generic;
@@ -16,8 +15,8 @@ using System.Reflection;
 using System.Security.Cryptography;
 using System.Text;
 using UnityEngine;
-using static EFT.HealthSystem.ActiveHealthController;
 using static EFT.InventoryLogic.InventoryEquipment;
+using EternalCycleClient.Utils;
 
 namespace EternalCycleClient
 {

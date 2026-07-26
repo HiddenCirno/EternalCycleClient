@@ -4,7 +4,7 @@ using EFT.InventoryLogic;
 using HarmonyLib;
 using ItemTransactionManagerResult = GStruct154<GClass3408>;
 
-namespace EternalCycle
+namespace EternalCycleClient.Patch
 {
     [HarmonyPatch(typeof(WorldInteractiveObject), "UnlockOperation")]
     public class DoorUnlockPatch

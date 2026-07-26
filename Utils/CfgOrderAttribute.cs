@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace EternalCycleClient
+namespace EternalCycleClient.Utils
 {
     /// <summary>
     /// 配置项排序标签

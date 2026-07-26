@@ -3,7 +3,7 @@ using EFT.InventoryLogic;
 using HarmonyLib;
 using ItemTransactionManagerResult = GStruct154<GClass3408>;
 
-namespace EternalCycleClient
+namespace EternalCycleClient.Patch
 {
     [HarmonyPatch(typeof(KeycardDoor), "UnlockOperation")]
     public class KeyCardDoorUnlockPatch

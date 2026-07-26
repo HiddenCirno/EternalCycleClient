@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace EternalCycleClient
+namespace EternalCycleClient.Utils
 {
     /// <summary>
     /// 自定义色板

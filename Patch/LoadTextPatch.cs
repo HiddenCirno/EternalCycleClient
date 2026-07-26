@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace EternalCycle
+namespace EternalCycleClient.Patch
 {
     [HarmonyPatch(typeof(GClass2348), nameof(GClass2348.Localized), new Type[] { typeof(string), typeof(string) })]
     public class LoadTextPatch
