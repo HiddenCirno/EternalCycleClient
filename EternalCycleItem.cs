@@ -124,7 +124,7 @@ namespace EternalCycleClient
                                     var cloneItem = item.CloneItem().ReassignAllIds();
                                     generatedItem = cloneItem;
                                     ItemSpawner.CloneAndSpawnItemIntoStash(cloneItem);
-                                    NotificationManagerClass.DisplayMessageNotification($"{ContextMenuMemory.CurrentItem.StringTemplateId} Name".Localized());
+                                    NotificationManagerClass.DisplayMessageNotification($"{ContextMenuMemory.CurrentItem.StringTemplateId} Name".Localized() + " 复制成功，请稍作等待或切回主菜单然后切回仓库");
                                 }),
                                 wishIcon                                 // 图标可为 null，也可加载
                             );
@@ -138,7 +138,7 @@ namespace EternalCycleClient
                                     generatedItem = cloneItem;
                                     ItemSpawner.CloneAndSpawnItemIntoStash(cloneItem);
                                     // 你的完美复制逻辑
-                                    NotificationManagerClass.DisplayMessageNotification($"{ContextMenuMemory.CurrentItem.StringTemplateId} Name".Localized());
+                                    NotificationManagerClass.DisplayMessageNotification($"{ContextMenuMemory.CurrentItem.StringTemplateId} Name".Localized() + " 复制成功，请稍作等待或切回主菜单然后切回仓库");
                                 }),
                                 wishIcon                                 // 图标可为 null，也可加载
                             );
