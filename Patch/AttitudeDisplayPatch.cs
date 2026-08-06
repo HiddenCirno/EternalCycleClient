@@ -1,11 +1,12 @@
-﻿using HarmonyLib;
+﻿using EFT;
+using HarmonyLib;
 using System.Text;
-using SkillEffect = GClass1443;
+using SkillEffect = JsonType.DamageEffectSpecification;
 
 
 namespace EternalCycleClient.Patch
 {
-    [HarmonyPatch(typeof(SkillEffect), "GetStringValue")]
+    [HarmonyPatch(typeof(SkillEffect), nameof(SkillEffect.GetStringValue))]
     public class AttitudeDisplayPatch
     {
         [HarmonyPrefix]
@@ -67,7 +68,7 @@ namespace EternalCycleClient.Patch
 
     }
 
-    [HarmonyPatch(typeof(SkillEffect), "GetFullStringValue")]
+    [HarmonyPatch(typeof(SkillEffect), nameof(SkillEffect.GetFullStringValue))]
     public class VulcanCore_AttitudeDisplayTooltipPatch
     {
         [HarmonyPrefix]

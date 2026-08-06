@@ -1,10 +1,11 @@
-﻿using HarmonyLib;
+﻿using EFT;
+using HarmonyLib;
 using System;
 using System.Collections.Generic;
 
 namespace EternalCycleClient.Patch
 {
-    [HarmonyPatch(typeof(GClass2348), nameof(GClass2348.Localized), new Type[] { typeof(string), typeof(string) })]
+    [HarmonyPatch(typeof(LocalizationExtensions), nameof(LocalizationExtensions.Localized), new Type[] { typeof(string), typeof(string) })]
     public class LoadTextPatch
     {
         private static readonly Random random = new Random();

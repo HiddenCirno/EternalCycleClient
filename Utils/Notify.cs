@@ -14,7 +14,7 @@ namespace EternalCycleClient.Utils
         {
             if (!isMute)
             {
-                NotificationManagerClass.DisplayMessageNotification(
+                NotificationManager.DisplayMessageNotification(
                     message,
                     ENotificationDurationType.Default,
                     notificationType,
@@ -27,7 +27,7 @@ namespace EternalCycleClient.Utils
         /// </summary>
         public static void Message(string message, ENotificationIconType notificationType = ENotificationIconType.Default)
         {
-            NotificationManagerClass.DisplayMessageNotification(
+            NotificationManager.DisplayMessageNotification(
                 message,
                 ENotificationDurationType.Default,
                 notificationType,

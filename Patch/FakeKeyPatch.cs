@@ -8,7 +8,7 @@ using System.Text.RegularExpressions;
 
 namespace EternalCycleClient.Patch
 {
-    [HarmonyPatch(typeof(PlayerOwner), "GetKey")]
+    [HarmonyPatch(typeof(PlayerOwner), nameof(PlayerOwner.GetKey))]
     public class FakeKeyPatch
     {
         [HarmonyPrefix]
@@ -19,7 +19,7 @@ namespace EternalCycleClient.Patch
                 onlyMerged: false
             ).Where(x =>
             {
-                string description = LocaleManagerClass.LocaleManagerClass.method_4(x.Template.KeyId + " Description");
+                string description = LocalizationManager._instance.LocalizedValue(x.Template.KeyId + " Description");
                 if (ContainsObjectId(description))
                 {
                     string targetId = ExtractFirstObjectId(description);

@@ -1,10 +1,12 @@
 ﻿using Comfort.Common;
 using EFT;
 using EFT.Ballistics;
+using EFT.Communications;
 using EFT.HealthSystem;
 using EFT.Interactive;
 using EFT.InventoryLogic;
 using EFT.UI;
+using EternalCycleClient.Utils;
 using HarmonyLib;
 using Newtonsoft.Json;
 using SPT.Reflection.Patching;
@@ -16,7 +18,6 @@ using System.Security.Cryptography;
 using System.Text;
 using UnityEngine;
 using static EFT.InventoryLogic.InventoryEquipment;
-using EternalCycleClient.Utils;
 
 namespace EternalCycleClient
 {
@@ -49,7 +50,7 @@ namespace EternalCycleClient
                 public class ItemUiContext_ShowContextMenu_Patch
                 {
                     [HarmonyPrefix]
-                    public static void Prefix(ItemContextAbstractClass itemContext)
+                    public static void Prefix(ItemContext itemContext)
                     {
                         //Console.WriteLine(123);
                         ContextMenuMemory.CurrentItem = itemContext?.Item;
@@ -64,20 +65,20 @@ namespace EternalCycleClient
                     protected override MethodBase GetTargetMethod()
                     {
                         return typeof(SimpleContextMenu)
-                            .GetMethod(nameof(SimpleContextMenu.method_0))
+                            .GetMethod(nameof(SimpleContextMenu.ShowMenu))
                             .MakeGenericMethod(typeof(EItemInfoButton));
                     }
                     [PatchPrefix]
-                    private static void Prefix(ItemInfoInteractionsAbstractClass<EItemInfoButton> contextInteractions, Item item)
+                    private static void Prefix(ContextInteractions<EItemInfoButton> contextInteractions, Item item)
                     {
                         //hyw呢, 我的Patch呢???
                         //Console.WriteLine(456);
-                        if (!(contextInteractions is ContextInteractionsAbstractClass gclass)) return;
+                        if (!(contextInteractions is BaseItemContextInteractions gclass)) return;
 
-                        var itemContext = gclass.ItemContextAbstractClass;
+                        var itemContext = gclass.ItemContext;
                         if (itemContext.ViewType == EItemViewType.Inventory)
                         {
-                            if (GClass2340.InRaid)
+                            if (InGameStatus.InRaid)
                             {
                                 return;
                             }
@@ -111,12 +112,12 @@ namespace EternalCycleClient
                             // ...（你的原有代码，包括 InRaid、Hideout、Parent 等判断，此处省略）
 
                             // 2. 获取动态菜单字典（如果为 null 则初始化）
-                            var dynamicInteractions = gclass.Dictionary_0 ?? new System.Collections.Generic.Dictionary<string, DynamicInteractionClass>();
+                            var dynamicInteractions = gclass._dynamicInteractions ?? new Dictionary<string, DynamicContextInteraction>();
 
-                            var wishIcon = CacheResourcesPopAbstractClass.Pop<Sprite>("Characteristics/Icons/Disassemble");// + EItemInfoButton.AddToWishlist);
+                            var wishIcon = EFT.Utilities.ResourcesCache.Pop<Sprite>("Characteristics/Icons/Disassemble");// + EItemInfoButton.AddToWishlist);
 
 
-                            dynamicInteractions["EXACT_CLONE"] = new DynamicInteractionClass(
+                            dynamicInteractions["EXACT_CLONE"] = new EFT.UI.DynamicContextInteraction(
                                 "完全复制",                           // 菜单显示的文本
                                 EXACT_CLONE,                     // 第二个参数（通常也是标识，可重复显示文本）
                                 new Action(() =>                     // 点击后的回调
@@ -124,12 +125,12 @@ namespace EternalCycleClient
                                     var cloneItem = item.CloneItem().ReassignAllIds();
                                     generatedItem = cloneItem;
                                     ItemSpawner.CloneAndSpawnItemIntoStash(cloneItem);
-                                    NotificationManagerClass.DisplayMessageNotification($"{ContextMenuMemory.CurrentItem.StringTemplateId} Name".Localized() + " 复制成功，请稍作等待或切回主菜单然后切回仓库");
+                                    NotificationManager.DisplayMessageNotification($"{ContextMenuMemory.CurrentItem.StringTemplateId} Name".Localized() + " 复制成功，请稍作等待或切回主菜单然后切回仓库");
                                 }),
                                 wishIcon                                 // 图标可为 null，也可加载
                             );
 
-                            dynamicInteractions["PERFECT_CLONE"] = new DynamicInteractionClass(
+                            dynamicInteractions["PERFECT_CLONE"] = new EFT.UI.DynamicContextInteraction(
                                 "完美复制",
                                 PERFECT_CLONE,                     // 第二个参数（通常也是标识，可重复显示文本）
                                 new Action(() =>                     // 点击后的回调
@@ -138,7 +139,7 @@ namespace EternalCycleClient
                                     generatedItem = cloneItem;
                                     ItemSpawner.CloneAndSpawnItemIntoStash(cloneItem);
                                     // 你的完美复制逻辑
-                                    NotificationManagerClass.DisplayMessageNotification($"{ContextMenuMemory.CurrentItem.StringTemplateId} Name".Localized() + " 复制成功，请稍作等待或切回主菜单然后切回仓库");
+                                    NotificationManager.DisplayMessageNotification($"{ContextMenuMemory.CurrentItem.StringTemplateId} Name".Localized() + " 复制成功，请稍作等待或切回主菜单然后切回仓库");
                                 }),
                                 wishIcon                                 // 图标可为 null，也可加载
                             );
@@ -147,31 +148,43 @@ namespace EternalCycleClient
                 }
 
                 //改变按钮渲染
-                [HarmonyPatch(typeof(InteractionButtonsContainer), nameof(InteractionButtonsContainer.method_3))]
+                //你妈呀是哪个天才把他妈的method0和method1改成同一个名字了?
+                [HarmonyPatch(typeof(InteractionButtonsContainer), nameof(InteractionButtonsContainer.CreateContextButton), new Type[] {
+                    typeof(string),
+                    typeof(string),
+                    typeof(SimpleContextMenuButton),
+                    typeof(RectTransform),
+                    typeof(Sprite),
+                    typeof(Action),
+                    typeof(Action),
+                    typeof(bool),
+                    typeof(bool)
+                })]
                 public class DynamicInteractionWishStylePatch
                 {
                     [HarmonyPrefix]
-                    public static bool Prefix(InteractionButtonsContainer __instance, DynamicInteractionClass interaction)
+                    // 注意：这里的参数必须与原方法的参数名称一致！我们使用 ref 关键字来拦截并修改 template
+                    public static bool Prefix(InteractionButtonsContainer __instance, string key, string caption, ref SimpleContextMenuButton template)
                     {
-                        if (interaction.Key != EXACT_CLONE && interaction.Key != PERFECT_CLONE) return true;
+                        // 假设原先的枚举在 ToString() 之后等于这里的字符串
+                        string exactCloneStr = EXACT_CLONE.ToString();
+                        string perfectCloneStr = PERFECT_CLONE.ToString();
 
-                        var traverse = Traverse.Create(__instance);
+                        if (key == exactCloneStr || key == perfectCloneStr)
+                        {
+                            var traverse = Traverse.Create(__instance);
+                            var defaultButton = __instance._buttonTemplate;// traverse.Field<SimpleContextMenuButton>("_buttonTemplate").Value;
+                            var specifiedButtons = __instance._specifiedButtons; // traverse.Field<SimpleSpecifiedContextButtons>("_specifiedButtons").Value;
 
-                        var defaultButton = traverse.Field<SimpleContextMenuButton>("_buttonTemplate").Value;
+                            var wishTemplate = specifiedButtons?.GetSpecifiedButton(EItemInfoButton.AddToWishlist, defaultButton) ?? defaultButton;
 
-                        var specifiedButtons = traverse.Field<SimpleSpecifiedContextButtons>("_specifiedButtons").Value;
+                            // 直接将传入的 template 替换为我们的 wishTemplate
+                            template = wishTemplate;
+                        }
 
-                        var wishTemplate = specifiedButtons?.GetSpecifiedButton(EItemInfoButton.AddToWishlist, defaultButton) ?? defaultButton;
-
-                        var buttonsContainer = traverse.Field<RectTransform>("_buttonsContainer").Value;
-
-                        var method = AccessTools.Method(typeof(InteractionButtonsContainer), "method_1");
-
-                        var button = method.Invoke(__instance, new object[] { interaction.Key, interaction.Key, wishTemplate, buttonsContainer, interaction.Icon, new Action(interaction.Execute), null, false, true });
-
-                        AccessTools.Method(typeof(InteractionButtonsContainer), "method_5").Invoke(__instance, new object[] { button });
-
-                        return false;
+                        // 返回 true，让原方法带着我们修改后的 template 继续往下执行正常逻辑
+                        // 这样就不需要再去手动反射调用 method_1 或者 method_5 了！
+                        return true;
                     }
                 }
 
@@ -196,7 +209,7 @@ namespace EternalCycleClient
                             Notify.Warning("仓库已满！");
                             return;
                         }
-                        var addResult = InteractionsHandlerClass.Add(
+                        var addResult = ItemManipulator.Add(
                             item,
                             targetLocation,
                             controller,
@@ -269,17 +282,17 @@ namespace EternalCycleClient
             public static class ItemSpawnStashPatch
             {
                 //捕获invctrler
-                [HarmonyPatch(typeof(InventoryScreen), "Show", new Type[]
+                [HarmonyPatch(typeof(InventoryScreen), nameof(InventoryScreen.Show), new Type[]
                 {
         typeof(IHealthController),
         typeof(InventoryController),
-        typeof(AbstractQuestControllerClass),
-        typeof(AbstractAchievementControllerClass),
-        typeof(AbstractPrestigeControllerClass),
+        typeof(EFT.Quests.QuestController),
+        typeof(EFT.Achievements.AchievementsController),
+        typeof(EFT.Prestige.PrestigeController),
         typeof(CompoundItem),
         typeof(EInventoryTab),
-        typeof(ISession),
-        typeof(ItemContextAbstractClass),
+        typeof(EFT.IEftSession),
+        typeof(ItemContext),
         typeof(bool)
                 })]
                 public class InventoryScreen_Show_Patch
@@ -299,11 +312,11 @@ namespace EternalCycleClient
                 }
 
                 //桥接请求
-                [HarmonyPatch(typeof(TraderControllerClass), "ConvertOperationResultToOperation")]
+                [HarmonyPatch(typeof(ItemController), nameof(ItemController.ConvertOperationResultToOperation))]
                 public class Patch_ConvertOperation
                 {
                     [HarmonyPrefix]
-                    public static bool Prefix(TraderControllerClass __instance, IRaiseEvents operationResult, ref BaseInventoryOperationClass __result)
+                    public static bool Prefix(ItemController __instance, IOperationResult operationResult, ref EFT.InventoryLogic.Operations.AbstractOperation __result)
                     {
                         try
                         {
@@ -317,28 +330,16 @@ namespace EternalCycleClient
                             //3405是ADD
                             //你妈的这段4.1是不是得改
                             string operationTypeName = operationResult.GetType().Name;
-                            if (targetItem != null && operationTypeName == "GClass3405")
+                            if (targetItem != null && operationTypeName == "AddResult")
                             {
-                                var method12 = AccessTools.Method(operationResult.GetType().BaseType, "method_12")
-                                            ?? AccessTools.Method(__instance.GetType(), "method_12");
+                                ushort txId = __instance.GetAndIncrementNextOperationId();
+                                __result = new AddItemRouter.EternalCycleCloneOperationClass(txId, __instance, targetItem);
+                                Console.WriteLine($"[EternalCycle] {operationTypeName}桥接成功");
 
-                                if (method12 != null)
-                                {
-                                    ushort txId = (ushort)method12.Invoke(__instance, null);
+                                //清空缓存
 
-                                    //桥接到自定义路由
-                                    __result = new AddItemRouter.EternalCycleCloneOperationClass(txId, __instance, targetItem);
-                                    Console.WriteLine($"[EternalCycle] {operationTypeName}桥接成功");
-
-                                    //清空缓存
-
-                                    //不再执行
-                                    return false;
-                                }
-                                else
-                                {
-                                    Console.WriteLine("[EternalCycle] 警告： method_12 获取失败！");
-                                }
+                                //不再执行
+                                return false;
                             }
                         }
                         catch (Exception ex)
@@ -357,7 +358,7 @@ namespace EternalCycleClient
 
                 //路由层客户端通信协议
                 [Serializable]
-                public class EternalCycleCloneCommand : GClass3473
+                public class EternalCycleCloneCommand : EFT.InventoryLogic.Operations.CommandWithOwners
                 {
                     //路由请求类型
                     [JsonProperty("Action")]
@@ -365,15 +366,15 @@ namespace EternalCycleClient
 
                     //物品数据
                     [JsonProperty("stashData")]
-                    public FlatItemsDataClass[] ItemData;
+                    public JsonType.FlatItem[] ItemData;
                 }
 
                 //行为描述
-                public class EternalCycleCloneDescriptor : BaseDescriptorClass
+                public class EternalCycleCloneDescriptor : InventoryOperationDescriptor
                 {
                     public Item ItemData;
 
-                    public override GStruct152<BaseInventoryOperationClass> ToInventoryOperation(IPlayer player)
+                    public override Diz.LanguageExtensions.OperationCreationResult<EFT.InventoryLogic.Operations.AbstractOperation> ToInventoryOperation(IPlayer player)
                     {
                         var operation = new EternalCycleCloneOperationClass(
                             OperationId,
@@ -385,14 +386,14 @@ namespace EternalCycleClient
                 }
 
                 //行为执行体
-                public class EternalCycleCloneOperationClass : BaseInventoryOperationClass
+                public class EternalCycleCloneOperationClass : EFT.InventoryLogic.Operations.AbstractOperation
                 {
                     private Item _itemToSpawn;
 
                     //构造函数
                     public EternalCycleCloneOperationClass(
                     ushort id,
-                    TraderControllerClass controller,
+                    ItemController controller,
                     Item item)
                     : base(id, controller)
                     {
@@ -405,7 +406,7 @@ namespace EternalCycleClient
                     }
 
                     //描述
-                    public override BaseDescriptorClass ToDescriptor()
+                    public override InventoryOperationDescriptor ToDescriptor()
                     {
                         return new EternalCycleCloneDescriptor
                         {
@@ -415,9 +416,9 @@ namespace EternalCycleClient
                     }
 
                     //传递数据
-                    public override GClass3471 ToBaseInventoryCommand(string ownerId)
+                    public override EFT.InventoryLogic.Operations.BaseInventoryCommand ToBaseInventoryCommand(string ownerId)
                     {
-                        var itemFactory = Singleton<ItemFactoryClass>.Instance;
+                        var itemFactory = Singleton<ItemFactory>.Instance;
                         return new EternalCycleCloneCommand
                         {
                             ItemData = itemFactory.TreeToFlatItems(new Item[] { _itemToSpawn })
@@ -437,7 +438,7 @@ namespace EternalCycleClient
             public static class GodMode
             {
                 //无敌Patch
-                [HarmonyPatch(typeof(Player), "ApplyDamageInfo")]
+                [HarmonyPatch(typeof(Player), nameof(Player.ApplyDamageInfo))]
                 public class GodMode_ApplyDamageInfoPatch
                 {
                     public static bool Prefix(Player __instance)
@@ -454,7 +455,7 @@ namespace EternalCycleClient
                 }
 
                 //阻止死亡Patch
-                [HarmonyPatch(typeof(ActiveHealthController), "Kill")]
+                [HarmonyPatch(typeof(ActiveHealthController), nameof(ActiveHealthController.Kill))]
                 public static class GodMode_AHCKillPatch
                 {
                     public static bool Prefix(ActiveHealthController __instance)
@@ -471,7 +472,7 @@ namespace EternalCycleClient
                 }
 
                 //阻止部位损毁
-                [HarmonyPatch(typeof(ActiveHealthController), "DestroyBodyPart")]
+                [HarmonyPatch(typeof(ActiveHealthController), nameof(ActiveHealthController.DestroyBodyPart))]
                 public static class GodMode_AHCDestroyBodyPartPatch
                 {
                     public static bool Prefix(ActiveHealthController __instance)
@@ -549,13 +550,13 @@ namespace EternalCycleClient
             public static class InfiniteAmmo
             {
                 //Patch
-                [HarmonyPatch(typeof(BallisticsCalculator), "Shoot", new Type[] { typeof(EftBulletClass) })]
+                [HarmonyPatch(typeof(BallisticsCalculator), nameof(BallisticsCalculator.Shoot), new Type[] { typeof(Shot) })]
                 public class ShootPatch
                 {
                     [HarmonyPostfix]
-                    public static void Postfix(EftBulletClass shot)
+                    public static void Postfix(Shot shot)
                     {
-                        if (!PluginsCore.CorrectGameWorld || !Singleton<ItemFactoryClass>.Instantiated)
+                        if (!PluginsCore.CorrectGameWorld || !Singleton<ItemFactory>.Instantiated)
                         {
                             return;
                         }
@@ -575,13 +576,13 @@ namespace EternalCycleClient
                             return;
                         }
 
-                        MagazineItemClass currentMagazine = weapon.GetCurrentMagazine();
+                        Magazine currentMagazine = weapon.GetCurrentMagazine();
 
                         //提取武器弹药
                         if (currentMagazine != null)
                         {
                             //转轮
-                            if (currentMagazine is CylinderMagazineItemClass cylinderMag)
+                            if (currentMagazine is CylinderMagazine cylinderMag)
                             {
                                 foreach (Slot camora in cylinderMag.Camoras)
                                 {
@@ -613,7 +614,7 @@ namespace EternalCycleClient
                     {
                         //重新生成ID
                         string fakeId = ItemInstanceHelper.GenerateSafeHexId(ammo.Template.StringId, $"{DateTime.Now.Ticks}_{Guid.NewGuid()}");// new MongoID();
-                        return Singleton<ItemFactoryClass>.Instance.CreateItem(fakeId, ammo.TemplateId, null);
+                        return Singleton<ItemFactory>.Instance.CreateItem(fakeId, ammo.TemplateId, null);
                     }
                 }
             }
@@ -682,7 +683,7 @@ namespace EternalCycleClient
                 }
             }
 
-            [HarmonyPatch(typeof(GameWorld), "OnGameStarted")]
+            [HarmonyPatch(typeof(GameWorld), nameof(GameWorld.OnGameStarted))]
             public class GameStartPatch
             {
                 [HarmonyPostfix]
@@ -697,7 +698,7 @@ namespace EternalCycleClient
         public class InfinityWeight
         {
             //无限负重Patch
-            [HarmonyPatch(typeof(InventoryEquipment), "smethod_1")]
+            [HarmonyPatch(typeof(InventoryEquipment), nameof(InventoryEquipment.GetTotalWeight))]
             public class InfinityWeightPatch
             {
                 public static bool Prefix(InventoryEquipment __instance, IEnumerable<Slot> slots, ref float __result)
@@ -711,10 +712,10 @@ namespace EternalCycleClient
                     return true;
                 }
             }
-            [HarmonyPatch(typeof(Class2408), "method_1")]
+            [HarmonyPatch(typeof(CG_Class2408), nameof(CG_Class2408.method_1))]
             public class InfinityWeightPatch2
             {
-                public static bool Prefix(Class2408 __instance, Slot slot, ref float __result)
+                public static bool Prefix(CG_Class2408 __instance, Slot slot, ref float __result)
                 {
                     if ((PluginsCore.StashController != null && PluginsCore.StashController.Inventory.CheckItem(ITEMID)) || (PluginsCore.CorrectGameWorld != null && PluginsCore.CorrectPlayer != null && PluginsCore.CorrectPlayer.Inventory.CheckItem(ITEMID)))
                     {
@@ -775,10 +776,10 @@ namespace EternalCycleClient
         public static class TelekinisisUnlock
         {
             //拦截互动菜单
-            [HarmonyPatch(typeof(GetActionsClass), "GetAvailableActions", new Type[] { typeof(GamePlayerOwner), typeof(GInterface177) })]
+            [HarmonyPatch(typeof(InteractionContextHelper), nameof(InteractionContextHelper.GetAvailableActions), new Type[] { typeof(GamePlayerOwner), typeof(IInteractive) })]
             public class GetActionsClassPatch
             {
-                public static void Postfix(GamePlayerOwner owner, GInterface177 interactive, ref ActionsReturnClass __result)
+                public static void Postfix(GamePlayerOwner owner, IInteractive interactive, ref EFT.UI.AvailableInteractionState __result)
                 {
                     if (interactive == null || __result == null || PluginsCore.CorrectPlayer == null || !PluginsCore.CorrectPlayer.Inventory.CheckItem(ITEMID)) return;
 
@@ -798,7 +799,7 @@ namespace EternalCycleClient
                         if (!hasUnlock)
                         {
                             //通过Insert让它变为首选项
-                            __result.Actions.Insert(0, new ActionsTypesClass
+                            __result.Actions.Insert(0, new InteractionAction
                             {
                                 Name = "Unlock",
                                 Action = new Action(() =>
@@ -961,9 +962,9 @@ namespace EternalCycleClient
                 //重新为维修包充能
                 if (item.TryGetItemComponent<RepairKitComponent>(out var repairKit))
                 {
-                    if (repairKit.Resource < repairKit.RepairKitsTemplateClass.MaxRepairResource)
+                    if (repairKit.Resource < repairKit._template.MaxRepairResource)
                     {
-                        repairKit.Resource = repairKit.RepairKitsTemplateClass.MaxRepairResource;
+                        repairKit.Resource = repairKit._template.MaxRepairResource;
                     }
                 }
             }

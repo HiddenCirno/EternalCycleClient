@@ -1,12 +1,14 @@
-﻿using System;
+﻿using EFT;
 using HarmonyLib;
+using System;
 using System.Text;
-using BuffEffect = GClass3019.GClass3044.GClass3045;
+using EFT.HealthSystem;
+using BuffEffect = EFT.HealthSystem.EffectsSettings.StimulatorSettings.StimulatorBuffSettings;
 
 
 namespace EternalCycleClient.Patch
 {
-    [HarmonyPatch(typeof(BuffEffect), "GetStringValue")]
+    [HarmonyPatch(typeof(BuffEffect), nameof(BuffEffect.GetStringValue))]
     public class BuffDisplayPatch
     {
         [HarmonyPrefix]
@@ -73,7 +75,7 @@ namespace EternalCycleClient.Patch
 
     }
 
-    [HarmonyPatch(typeof(BuffEffect), "GetFullStringValue")]
+    [HarmonyPatch(typeof(BuffEffect), nameof(BuffEffect.GetFullStringValue))]
     public class VulcanCore_BuffDisplayTooltipPatch
     {
         [HarmonyPrefix]
@@ -92,7 +94,7 @@ namespace EternalCycleClient.Patch
             string text = __instance.BuffName.Localized(null);
 
             // 保持原有的名称处理逻辑
-            if (flag && !BuffEffect.HashSet_0.Contains(__instance.BuffName))
+            if (flag && !BuffEffect._ignoreAppliesPrefix.Contains(__instance.BuffName))
             {
                 stringBuilder.Append("Applies".Localized(null) + " ");
                 text = text.ToLower();

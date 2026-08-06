@@ -1,28 +1,29 @@
-﻿using EFT;
+﻿using Diz.LanguageExtensions;
+using EFT;
 using EFT.Interactive;
 using EFT.InventoryLogic;
 using HarmonyLib;
-using ItemTransactionManagerResult = GStruct154<GClass3408>;
+using ItemTransactionManagerResult = Diz.LanguageExtensions.OperationResult<EFT.InventoryLogic.DiscardResult>;
 
 namespace EternalCycleClient.Patch
 {
-    [HarmonyPatch(typeof(WorldInteractiveObject), "UnlockOperation")]
+    [HarmonyPatch(typeof(WorldInteractiveObject), nameof(WorldInteractiveObject.UnlockOperation))]
     public class DoorUnlockPatch
     {
         [HarmonyPostfix]
-        public static void Postfix(WorldInteractiveObject __instance, KeyComponent key, Player player, WorldInteractiveObject wio, ref GStruct156<KeyInteractionResultClass> __result)
+        public static void Postfix(WorldInteractiveObject __instance, KeyComponent key, Player player, WorldInteractiveObject wio, ref Option<UnlockResult> __result)
         {
             //sbBSG
-            if (__result.Failed && __result.Error is GClass1522)
+            if (__result.Failed && __result.Error is StringError)
             {
                 key.NumberOfUsages++;
                 ItemTransactionManagerResult gstruct = default;
 
                 if (key.NumberOfUsages >= key.Template.MaximumNumberOfUsage && key.Template.MaximumNumberOfUsage > 0)
                 {
-                    gstruct = InteractionsHandlerClass.Discard(
+                    gstruct = ItemManipulator.Discard(
                         key.Item,
-                        (TraderControllerClass)key.Item.Parent.GetOwner(),
+                        (ItemController)key.Item.Parent.GetOwner(),
                         false
                     );
 
@@ -34,7 +35,7 @@ namespace EternalCycleClient.Patch
                 }
 
                 // 4. 强行篡改结果：成功开门！
-                __result = new KeyInteractionResultClass(key, gstruct.Value, true);
+                __result = new UnlockResult(key, gstruct.Value, true);
             }
         }
     }

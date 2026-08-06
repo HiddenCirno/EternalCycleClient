@@ -1,4 +1,6 @@
-﻿using EFT.UI.DragAndDrop;
+﻿using EFT;
+using EFT.UI.DragAndDrop;
+using EFT.Utilities;
 using EternalCycleClient.Class;
 using Newtonsoft.Json;
 using SPT.Common.Http;
@@ -104,7 +106,7 @@ namespace EternalCycleClient.Utils
 
             foreach (var kvp in response.VoicePath)
             {
-                ResourceKeyManagerAbstractClass.Dictionary_0.TryAdd(kvp.Key, kvp.Value);
+                InGameBundles._phrasesPaths.TryAdd(kvp.Key, kvp.Value);
 
                 Console.WriteLine($"[资源同步] 成果添加了声线资源: {kvp.Value}");
             }
@@ -138,11 +140,11 @@ namespace EternalCycleClient.Utils
                     {
                         Console.WriteLine($"loading gridview");
                         var key = $"UI/Rig Layouts/{prefab.name}";
-                        if (!CacheResourcesPopAbstractClass.Dictionary_0.ContainsKey(key))
+                        if (!ResourcesCache._storage.ContainsKey(key))
                         {
                             Console.WriteLine($"gridview added successful: {key}");
                             //Console.WriteLine($"Test: {gridView.GridViews}");
-                            CacheResourcesPopAbstractClass.Dictionary_0.Add(key, gridView);
+                            ResourcesCache._storage.Add(key, gridView);
                         }
 
                     }
@@ -161,11 +163,14 @@ namespace EternalCycleClient.Utils
             foreach (string file in Directory.GetFiles(fullPath))
             {
                 string fileName = Path.GetFileName(file).Replace(".png", "").Replace(".jpg", "");
-                CacheResourcesPopAbstractClass.Dictionary_0.Add($"Slots/{fileName}", fileName);
+                //CacheResourcesPopAbstractClass.Dictionary_0.Add($"Slots/{fileName}", fileName);
                 var sprite = TextureUtils.SimpleCreateSprite(TextureUtils.LoadFromFile(file, 1, 1), 100);
+                ResourcesCache._storage.Add($"Slots/{fileName}", sprite);
                 for (var i = 0; i < 30; i++)
                 {
-                    CacheResourcesPopAbstractClass.Dictionary_0.Add($"Slots/{fileName}_{i:D3}", sprite);
+                    var key = $"Slots/{fileName}_{i:D3}";
+                    ResourcesCache._storage.Add(key, sprite);
+                    Console.WriteLine($"slot icon added successful: {key}");
                 }
             }
         }
