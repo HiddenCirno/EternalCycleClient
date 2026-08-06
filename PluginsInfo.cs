@@ -4,6 +4,6 @@
     {
         public const string GUID = "eft.hiddenhiraigi.eternalcycleclient";
         public const string NAME = "EternalCycleClient";
-        public const string VERSION = "1.1.1";
+        public const string VERSION = "1.2.0";
     }
 }
