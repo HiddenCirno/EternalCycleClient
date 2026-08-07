@@ -1,0 +1,2853 @@
+This file is a merged representation of the entire codebase, combined into a single document by Repomix.
+
+<file_summary>
+This section contains a summary of this file.
+
+<purpose>
+This file contains a packed representation of the entire repository's contents.
+It is designed to be easily consumable by AI systems for analysis, code review,
+or other automated processes.
+</purpose>
+
+<file_format>
+The content is organized as follows:
+1. This summary section
+2. Repository information
+3. Directory structure
+4. Repository files (if enabled)
+5. Multiple file entries, each consisting of:
+  - File path as an attribute
+  - Full contents of the file
+</file_format>
+
+<usage_guidelines>
+- This file should be treated as read-only. Any changes should be made to the
+  original repository files, not this packed version.
+- When processing this file, use the file path to distinguish
+  between different files in the repository.
+- Be aware that this file may contain sensitive information. Handle it with
+  the same level of security as you would the original repository.
+</usage_guidelines>
+
+<notes>
+- Some files may have been excluded based on .gitignore rules and Repomix's configuration
+- Binary files are not included in this packed representation. Please refer to the Repository Structure section for a complete list of file paths, including binary files
+- Files matching patterns in .gitignore are excluded
+- Files matching default ignore patterns are excluded
+- Files are sorted by Git change count (files with more changes are at the bottom)
+</notes>
+
+</file_summary>
+
+<directory_structure>
+Class/
+  RouterRequestClass.cs
+locales/
+  en-us.json
+  zh-cn.json
+Patch/
+  AttitudeDisplayPatch.cs
+  BuffDisplayPatch.cs
+  DoorUnlockPatch.cs
+  FakeKeyPatch.cs
+  HideoutSpritePatch.cs
+  KeyCardDoorUnlockPatch.cs
+  LoadTextPatch.cs
+Utils/
+  CfgOrderAttribute.cs
+  ClientResourceManager.cs
+  ColorManager.cs
+  ConfigurationManagerAttributes.cs
+  LocaleManager.cs
+  MongoIdExtend.cs
+  Notify.cs
+  TextureUtils.cs
+.gitignore
+EternalCycleClient.csproj
+EternalCycleClient.sln
+EternalCycleItem.cs
+LICENSE
+PluginsCore.cs
+PluginsInfo.cs
+README.md
+</directory_structure>
+
+<files>
+This section contains the contents of the repository's files.
+
+<file path="Class/RouterRequestClass.cs">
+using Newtonsoft.Json;
+using System.Collections.Generic;
+
+namespace EternalCycleClient.Class
+{
+    public class SyncResourceRequest
+    {
+        [JsonProperty("clientHashes")]
+        public Dictionary<string, string> ClientHashes { get; set; } = new Dictionary<string, string>();
+    }
+
+    public class SyncResourceResponse
+    {
+        [JsonProperty("validFiles")]
+        public List<string> ValidFiles { get; set; } = new List<string>();
+
+        [JsonProperty("filesToUpdate")]
+        public Dictionary<string, string> FilesToUpdate { get; set; } = new Dictionary<string, string>();
+    }
+    public class VoiceResourceRequest
+    {
+        [JsonProperty("VoicePath")]
+        public Dictionary<string, string> VoicePath { get; set; } = new Dictionary<string, string>();
+    }
+}
+</file>
+
+<file path="Utils/CfgOrderAttribute.cs">
+using System;
+
+namespace EternalCycleClient.Utils
+{
+    /// <summary>
+    /// 配置项排序标签
+    /// </summary>
+    public class CfgOrderAttribute : Attribute
+    {
+        public int Order { get; }
+
+        public CfgOrderAttribute(int order)
+        {
+            Order = order;
+        }
+    }
+}
+</file>
+
+<file path="Utils/ColorManager.cs">
+using UnityEngine;
+
+namespace EternalCycleClient.Utils
+{
+    /// <summary>
+    /// 自定义色板
+    /// </summary>
+    public static class ColorManager
+    {
+        public static readonly ECColor EnemySafe = new ECColor("#00FF00");
+        public static readonly ECColor EnemySafeDestroy = new ECColor("#0000FF");
+        public static readonly ECColor EnemyWarning = new ECColor("#FFFF00");
+        public static readonly ECColor EnemyWarningDestroy = new ECColor("#FF0000");
+        public static readonly ECColor EnemyDangerous = new ECColor("#FF0000");
+        public static readonly ECColor EnemyDangerousDestroy = new ECColor("#590000");
+        public static readonly ECColor EnemyPartDestroy = new ECColor("#FF00FF");
+
+        public static readonly ECColor HealthBarBG = new ECColor("#333333");
+        public static readonly ECColor HealthBarFull = new ECColor("#00FF00");
+        public static readonly ECColor HealthBarHalf = new ECColor("#FFFF00");
+        public static readonly ECColor HealthBarQuarter = new ECColor("#FF0000");
+
+        public static readonly ECColor AimbotCircle = new ECColor("#FF0000");
+
+        public static readonly ECColor Tripwire = new ECColor("#FF0000");
+
+        public static readonly ECColor Corpse = new ECColor("#800000");
+
+        public static readonly ECColor LootCircle = new ECColor("#FFFFFF");
+
+        public static readonly ECColor Distance = new ECColor("#FFFF00");
+
+        public static readonly ECColor LootTier0 = new ECColor("#FFFFFF");
+        public static readonly ECColor LootTier1 = new ECColor("#00AA00");
+        public static readonly ECColor LootTier2 = new ECColor("#00A0FF");
+        public static readonly ECColor LootTier3 = new ECColor("#AA00AA");
+        public static readonly ECColor LootTier4 = new ECColor("#FFAA00");
+        public static readonly ECColor LootTier5 = new ECColor("#AA0000");
+        public static readonly ECColor LootTier6 = new ECColor("#FF55FF");
+        public static readonly ECColor LootTierX = new ECColor("#808080");
+        public static readonly ECColor LootTierEX = new ECColor("#DC143C");
+
+        public static readonly ECColor TextGray = new ECColor("#808080");
+
+        public static readonly ECColor ManagerGUIBackground = new ECColor("#FFFFFF");
+
+        public static readonly ECColor PlayerLevel = new ECColor("#7FFF00");
+        public static readonly ECColor PMCUSEC = new ECColor("#007CFF");
+        public static readonly ECColor PMCBEAR = new ECColor("#FF8C00");
+        public static readonly ECColor AllyPlayer = new ECColor("#66CCFF");
+        public static readonly ECColor Scav = new ECColor("#FFFF8B");
+        public static readonly ECColor Boss = new ECColor("#CE0000");
+        public static readonly ECColor Sniper = new ECColor("#00FA9A");
+        public static readonly ECColor Raider = new ECColor("#7300A6");
+        public static readonly ECColor Follower = new ECColor("#FF2DE9");
+        public static readonly ECColor Sectant = new ECColor("#ADFF2F");
+        public static readonly ECColor Santa = new ECColor("#00FFFF");
+        public static readonly ECColor BTR = new ECColor("#228B22");
+        public static readonly ECColor BlackDiv = new ECColor("#DC143C");//WTT compat
+        public static readonly ECColor Event = new ECColor("#818ef2");//BloodHound, etc
+    }
+
+    /// <summary>
+    /// 二次封装的自定义颜色结构, 同时具备字符串和UnityColor隐式转换
+    /// </summary>
+    public readonly struct ECColor
+    {
+        public readonly string HexColor;
+        public readonly string HexColorNoHash;
+        public readonly Color UnityColor;
+
+        /// <summary>
+        /// 从十六进制字符串构造颜色
+        /// </summary>
+        public ECColor(string hex)
+        {
+            //防御
+            HexColor = hex.StartsWith("#") ? hex.ToUpper() : $"#{hex}".ToUpper();
+            HexColorNoHash = HexColor.Substring(1);
+
+            //Color
+            if (ColorUtility.TryParseHtmlString(HexColor, out Color parsedColor))
+            {
+                UnityColor = parsedColor;
+            }
+            else
+            {
+                //解析失败
+                Debug.LogError($"颜色解析失败，无效的代码: {hex}");
+                UnityColor = Color.magenta;
+            }
+        }
+
+        //隐式转换
+        public static implicit operator Color(ECColor oc) => oc.UnityColor;
+
+        public static implicit operator string(ECColor oc) => oc.HexColor;
+
+        //覆盖ToString为文本拼接提供兼容
+        public override string ToString() => HexColor;
+    }
+}
+</file>
+
+<file path="Utils/ConfigurationManagerAttributes.cs">
+namespace EternalCycleClient.Utils
+{
+    /// <summary>
+    /// ConfigurationManager拓展
+    /// </summary>
+    internal sealed class ConfigurationManagerAttributes
+    {
+        /// <summary>
+        /// 用于覆盖 F12 菜单中显示的配置项名称 (Key)
+        /// </summary>
+        public string DispName;
+
+        /// <summary>
+        /// 排序, 越大越靠上
+        /// </summary>
+        public int? Order;
+
+        /// <summary>
+        /// 高级选项开关
+        /// </summary>
+        public bool? IsAdvanced;
+    }
+}
+</file>
+
+<file path="Utils/LocaleManager.cs">
+using BepInEx;
+using BepInEx.Configuration;
+using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
+using System.IO;
+
+namespace EternalCycleClient.Utils
+{
+    /// <summary>
+    /// 本地化管理器
+    /// </summary>
+    public static class LocaleManager
+    {
+        /// <summary>
+        /// 当前语言
+        /// </summary>
+        public static ConfigEntry<string> CurrentLanguage;
+
+        /// <summary>
+        /// 内存中的语言列表
+        /// </summary>
+        private static readonly Dictionary<string, Dictionary<string, string>> _loadedTranslations = new Dictionary<string, Dictionary<string, string>>();
+
+        /// <summary>
+        /// Fallback语言
+        /// </summary>
+        private const string FallbackLangName = "English";
+
+        public static void Initialize(ConfigFile config)
+        {
+            //扫描指定目录的所有语言文件
+            string dirPath = Path.Combine(PluginsCore.pluginDir, "locales");
+
+            _loadedTranslations.Clear();
+            List<string> availableLanguages = new List<string>();
+
+            string[] jsonFiles = Directory.GetFiles(dirPath, "*.json");
+            foreach (string file in jsonFiles)
+            {
+                try
+                {
+                    string json = File.ReadAllText(file);
+                    LocaleData data = JsonConvert.DeserializeObject<LocaleData>(json);
+
+                    if (data != null && !string.IsNullOrEmpty(data.Language) && data.Translate != null)
+                    {
+                        _loadedTranslations[data.Language] = data.Translate;
+                        availableLanguages.Add(data.Language);
+                    }
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine($"语言文件 ({file}) 加载错误! \n{e.Message}");
+                }
+            }
+
+            //Fallback
+            if (availableLanguages.Count == 0)
+            {
+                availableLanguages.Add(FallbackLangName);
+                _loadedTranslations[FallbackLangName] = new Dictionary<string, string>();
+            }
+
+            //Cfg初始化
+            CurrentLanguage = config.Bind(
+                "Language / 语言",
+                "Language Opinion / 语言设置",
+                availableLanguages.Contains(FallbackLangName) ? FallbackLangName : availableLanguages[0],
+                new ConfigDescription(
+                    "Change language (Configuration menu's requires game restart). / 更改语言（F12菜单需要重启游戏生效）。",
+                    new AcceptableValueList<string>(availableLanguages.ToArray())
+                ));
+        }
+
+        /// <summary>
+        /// 获取本地化
+        /// </summary>
+        /// <param name="key"></param>
+        /// <returns></returns>
+        public static string Get(string key)
+        {
+            if (_loadedTranslations.TryGetValue(CurrentLanguage.Value, out var currentDict))
+            {
+                if (currentDict.TryGetValue(key, out var text)) return text;
+            }
+
+            if (_loadedTranslations.TryGetValue(FallbackLangName, out var fallbackDict))
+            {
+                if (fallbackDict.TryGetValue(key, out var fallbackText)) return fallbackText;
+            }
+
+            return key;
+        }
+
+        /// <summary>
+        /// 拓展语法糖
+        /// </summary>
+        /// <param name="key"></param>
+        /// <returns></returns>
+        public static string i18n(this string key)
+        {
+            return Get(key);
+        }
+    }
+
+    /// <summary>
+    /// 本地化文本结构定义
+    /// </summary>
+    public class LocaleData
+    {
+        [JsonProperty("Language")]
+        public string Language { get; set; }
+
+        [JsonProperty("Translate")]
+        public Dictionary<string, string> Translate { get; set; }
+    }
+}
+</file>
+
+<file path="Utils/MongoIdExtend.cs">
+using EFT;
+using System;
+using System.Security.Cryptography;
+using System.Text;
+
+namespace EternalCycleClient.Utils
+{
+    /// <summary>
+    /// MongoId的拓展方法类
+    /// </summary>
+    public static class MongoIdExtend
+    {
+        //全局的sha256实例, 线程安全
+        [ThreadStatic]
+        private static SHA256 _sha256;
+        //HEX预查表
+        private static readonly char[] HexLookup = "0123456789abcdef".ToCharArray();
+
+        /// <summary>
+        /// MongoId的扩展方法, 基于原ID生成新的MongoId
+        /// </summary>
+        /// <param name="original">原始ID</param>
+        /// <param name="salt">传入的加盐信息</param>
+        /// <returns></returns>
+        public static MongoID Regenerate(this MongoID original, string salt)
+        {
+            if (original == null) return original;
+            string input = original.ToString() + (salt ?? string.Empty);
+            if (_sha256 == null) _sha256 = SHA256.Create();
+            //哈希计算
+            byte[] hashBytes = _sha256.ComputeHash(Encoding.UTF8.GetBytes(input));
+            //生成十六进制字符串
+            char[] hexBuffer = new char[24];
+            //截取字符串
+            for (int i = 0; i < 12; i++)
+            {
+                byte b = hashBytes[i];
+                //位运算拆分
+                hexBuffer[i * 2] = HexLookup[b >> 4];
+                hexBuffer[i * 2 + 1] = HexLookup[b & 0x0F];
+            }
+            //传入
+            return new MongoID(new string(hexBuffer));
+        }
+    }
+}
+</file>
+
+<file path="Utils/TextureUtils.cs">
+using BepInEx.Logging;
+using EFT;
+using EFT.InventoryLogic;
+using HarmonyLib;
+using SPT.SinglePlayer;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Reflection;
+using System.Text;
+using System.Text.RegularExpressions;
+using UnityEngine;
+
+
+namespace EternalCycleClient.Utils
+{
+    public class TextureUtils
+    {
+        public static Sprite SimpleCreateSprite(Texture2D tex)
+        {
+            return Sprite.Create(tex, new Rect(0, 0, tex.width, tex.height), new Vector2(0.5f, 0.5f), tex.width);
+        }
+        public static Sprite SimpleCreateSprite(Texture2D tex, float pixelsPerUnit)
+        {
+            return Sprite.Create(tex, new Rect(0, 0, tex.width, tex.height), new Vector2(0.5f, 0.5f), pixelsPerUnit);
+        }
+        public static Texture2D LoadFromFile(string path, int width = 2, int height = 2)
+        {
+            if (!File.Exists(path))
+            {
+                Debug.LogError($"File not found: {path}");
+                return null;
+            }
+            byte[] bytes = File.ReadAllBytes(path);
+            var tex = new Texture2D(width, height, TextureFormat.ARGB32, false);
+            //tex.globalMipMapLimit = 0;
+            tex.LoadImage(bytes);
+            return tex;
+        }
+    }
+}
+</file>
+
+<file path=".gitignore">
+# 屏蔽自动生成
+bin/
+# VSCode
+.vs/
+obj/
+</file>
+
+<file path="EternalCycleClient.sln">
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.36717.8
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EternalCycleClient", "EternalCycleClient.csproj", "{45625B5D-21BE-4694-8EFD-DE4B01FBA007}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{45625B5D-21BE-4694-8EFD-DE4B01FBA007}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{45625B5D-21BE-4694-8EFD-DE4B01FBA007}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{45625B5D-21BE-4694-8EFD-DE4B01FBA007}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{45625B5D-21BE-4694-8EFD-DE4B01FBA007}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {DFA5A535-CEB7-444A-BA27-D58473D41494}
+	EndGlobalSection
+EndGlobal
+</file>
+
+<file path="LICENSE">
+MIT License
+
+Copyright (c) 2026 HiddenCirno
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+</file>
+
+<file path="README.md">
+# EternalCycleClient
+client side of eternal cycle.
+</file>
+
+<file path="locales/en-us.json">
+{
+  "Language": "English",
+  "Translate": {
+    "loading_text_001": "What is a wave without the ocean? A beginning without an end?",
+    "loading_text_002": "They are different, but they go together.",
+    "loading_text_003": "Now you go among the stars, and I fall among the sand.",
+    "loading_text_004": "We are different. But we go....together.",
+    "loading_text_005": "你知道吗？长按「G」键并滑动鼠标滚轮 可以选择需要扔出的投掷物",
+    "loading_text_006": "5L2g5peg5LiN5peg6IGK77yf",
+    "loading_text_007": "We got a job to do.",
+    "loading_text_008": "游戏太黑看不清？试试Amand's Graphic模组吧",
+    "loading_text_009": "如果你的腿骨折或损毁了，而你没有携带止痛效果，那么你将无法奔跑",
+    "loading_text_010": "还在打开背包治疗自己吗？将鼠标放在胸挂和口袋里的可使用物品上按下数字键以进行快捷键绑定",
+    "loading_text_011": "一把武器耐久越低，就越容易发生故障，当然，近战武器除外",
+    "loading_text_012": "通常来讲，一把枪的上限取决于它最终能安装多少配件",
+    "loading_text_013": "如果你真的几乎花光了所有钱，至少也要装备一个耳机再进行游戏",
+    "loading_text_014": "作为Scav进行游戏时，你不会被其他Scav主动攻击",
+    "loading_text_015": "如果你的手臂骨折或损毁了，而你没有携带止痛效果，那么你将无法平稳的举枪瞄准",
+    "loading_text_016": "骨折可以使用夹板、Grizzly急救包或者手术包进行治疗",
+    "loading_text_017": "如果你的水分或能量值降至0，你几乎无法自然回复耐力",
+    "loading_text_018": "在游戏的前期，不携带近战武器可以让你减轻一些重量负担",
+    "loading_text_019": "在Fence的信任度达到最高等级前，即使你作为Scav进行游戏，也会被Boss攻击",
+    "loading_text_020": "在负重过高时接敌不是个好选择，也许你应该暂时丢掉背包",
+    "loading_text_021": "如果你没有足够的把握，最好不要使用近战武器攻击敌人",
+    "loading_text_022": "作为Scav进入战局和以你的PMC主角色进入战局是不同的，玩家操控的Scav会在随机地点和时间出生，装备也会是随机的",
+    "loading_text_023": "作为Scav进行游戏你不必担心因为死亡导致主角色装备掉落，如果你在对局中成功幸存，所有装备和搜集的物品可以被转移到你的库存中",
+    "loading_text_024": "当你扮演Scav时，你的主要角色将不会得到任何经验值或是升级技能",
+    "loading_text_025": "在战局中双击「O」键可以查看目前可用的撤离点",
+    "loading_text_026": "如果你在战局中停留太久，直至战局的倒计时归零都还没有撤离，你的角色会被认定为在行动中失踪",
+    "loading_text_027": "装填弹匣时，记得先检查它们是否兼容",
+    "loading_text_028": "在战局中时，点击背包页面最上方的健康标签页显示身体各部位的健康状态",
+    "loading_text_029": "购买物品时，记得勾选左上角的「提供所需物品」按钮来支付费用",
+    "loading_text_030": "商人有不同的信任度等级，每次升级都可以解锁新商品",
+    "loading_text_031": "枪械故障时，按下「L」检视枪械确认故障类型，之后按下「Shift + T」排除故障",
+    "loading_text_032": "除了低耐久，长时间射击导致的过热也会增大枪械故障的可能性",
+    "loading_text_033": "生命因何而沉睡?",
+    "loading_text_034": "商人的信任度可以通过完成任务来获取",
+    "loading_text_035": "在很久之前，护甲机制并没有现在这么复杂",
+    "loading_text_036": "护甲的部分防弹插板是可以更换的，右键它并选择搜索关联以查找兼容的物品",
+    "loading_text_037": "右键弹匣并选择搜索关联可以快速找到弹匣对应的弹药，但请注意，你的枪械可能无法发射弹匣所兼容的弹药",
+    "loading_text_038": "SPT曾经叫做SPT-AKI，在Senko-San离开项目组后，AKI的后缀被删除了，这个项目的前身是JET，而那就是另外一段故事了……",
+    "loading_text_039": "BSG并不拥有游戏中大部分武器的版权，恰恰相反，他们在游戏中拥有一段免责声明以避免版权问题",
+    "loading_text_040": "警告，限制区域电力即将重启，门禁将在重启后失效，请所有安保人员保持高度警戒",
+    "loading_text_041": "Also try Delta Force！",
+    "loading_text_042": "Also try Arena Breakout Infinity！",
+    "loading_text_043": "我们还有最后一个办法",
+    "loading_text_044": "哈夫克与你同频，信息予你无限",
+    "loading_text_045": "在时间面前，一切问题都是有解的",
+    "loading_text_046": "厌倦了永不停歇的战斗？也许你可以换一种玩法，比如多捡一些东西",
+    "loading_text_047": "哀余生之须臾，羡长江之无穷……可是长江之水也总有一天会流尽，何况人短暂的一生呢？",
+    "loading_text_048": "Welcome aboard, captain, all systems online.",
+    "loading_text_049": "在很久以前，塔科夫市流传着关于一个神秘组织「末日商会」的传说",
+    "loading_text_050": "逃离塔科夫是一款硬核战术射击游戏，这意味着它永远不可能走向大众",
+    "loading_text_051": "你知道TENET_吗？他是国内塔科夫圈土皇帝（已驾崩）",
+    "loading_text_052": "在很久以前，塔科夫市出现过一个叫Lure的神秘姑娘，你可能见过她",
+    "loading_text_053": "如果你真的很喜欢俄式武器，那么你最好早点卸载逃离塔科夫",
+    "loading_text_054": "固定武器只有在AI手里才能发挥它应有的威力，作为玩家，你最好别碰那东西",
+    "loading_text_055": "通常来讲，击杀BOSS能够取得丰厚的战利品奖励，但是话又说回来，有时候BOSS确实几乎无法给你提供任何收益",
+    "loading_text_056": "本MOD仅在Oddba论坛发布，论坛地址sns.oddba.cn，如果你花钱购买了SPT，我建议你痛骂卖家",
+    "loading_text_057": "请不要站在BTR的行进路线上挂机——好吧，尽量避免任何在野外的挂机行为，那很危险",
+    "loading_text_058": "Beware, beware, the daughter of the sea....",
+    "loading_text_059": "灯塔和街区这两张地图往往会造成极大的资源占用，如果你的电脑配置不够，可能会发生崩溃",
+    "loading_text_060": "部分撤离点需要特定条件才能撤离，它们往往会在你激活撤离点时出现提示，信号弹撤离点除外",
+    "loading_text_061": "「收藏家」任务所需的每一件物品几乎都代表一位塔科夫主播",
+    "loading_text_062": "宇宙再大，也有尽头，而野心永无止境",
+    "loading_text_063": "如果修剪、施肥、浇水、施药都不管用，你该怎么做？",
+    "loading_text_064": "想要攀登山峰，总需低头赶路",
+    "loading_text_065": "海上生明月，天涯共此时",
+    "loading_text_066": "秩序的强大之处不在于律法之下没有黑暗，而在于秩序永远不会认可这种黑暗",
+    "loading_text_067": "无论结果如何，努力总好过放弃",
+    "loading_text_068": "鸟为什么会飞？",
+    "loading_text_069": "人们纪念的是英雄的形象，而不是英雄的真相",
+    "loading_text_070": "你的名字无人知晓，你的功绩永世长存",
+    "loading_text_071": "Son, I want to offer you a second chance.",
+    "loading_text_072": "War, war never changes....",
+    "loading_text_073": "你有见过那个叫Lotus的姑娘吗？我对她手上的某些技术很感兴趣……",
+    "loading_text_074": "金色的美梦要开始躁动了……",
+    "loading_text_075": "站在安稳的时代评论前人铺路时的取舍是一种愚蠢且短视的行为",
+    "loading_text_076": "文明的遗产不应该变成个人的收藏",
+    "loading_text_077": "生活总得继续下去——恐慌和埋怨并不会叫醒太阳",
+    "loading_text_078": "有些人只希望看到他想看的，然后想着法子给你贴标签扣帽子拉仇恨",
+    "loading_text_079": "无论在哪个世界，总有人秉持着守护的志愿，憧憬即将到来的明天",
+    "loading_text_080": "民族主义就像底裤，必要时可以露出来给人看，但不能无时无刻都露在外面",
+    "loading_text_081": "战争是流血的政治，政治是不流血的战争",
+    "loading_text_082": "花开花落，尽归尘土，缘起缘灭，曲终人散",
+    "loading_text_083": "想明白生命的意义吗？想要真正的……活着吗？",
+    "loading_text_084": "人有五名……",
+    "loading_text_085": "我们活着，就是对恶意最大的反抗",
+    "loading_text_086": "吾生也有涯，而知也无涯……令人悲伤的事实",
+    "loading_text_087": "你说的对，但是逃离塔科夫是一款由BSG工作室研发的硬核战术射击游戏……",
+    "loading_text_088": "在时间的尽头，我们终将重逢",
+    "loading_text_089": "没有人的文明毫无意义",
+    "loading_text_090": "憧憬是和理解最遥远的距离",
+    "loading_text_091": "Also try Escape From Duckov!",
+    "loading_text_092": "厌倦了塔科夫的混乱的话，就暂时休息一下吧，我会一直注视着你的，预言家……",
+    "loading_text_093": "我曾目睹星辰焚寂，沉入永夜；我曾见证光年之外，王朝兴灭……",
+    "loading_text_094": "不破其旧，无以立新！",
+    "loading_text_095": "我梦见一片焦土，一株破土而生的新蕊，它迎着朝阳绽放，向我低语呢喃……",
+    "loading_text_096": "人として....生きて下さい",
+    "loading_text_097": "即使引导早已破碎，还请您当上艾尔登之王",
+    "loading_text_098": "生存还是毁灭？这是个问题……",
+    "loading_text_099": "六十二公分，十七公斤重——真沉啊",
+    "loading_text_100": "那些上岸的鱼再也不是鱼了，同样，真正进入太空的人，再也不是人了",
+    "loading_text_101": "Hey, you. You finally awake.",
+    "loading_text_102": "对未来的真正慷慨，是把一切都献给现在"
+  }
+}
+</file>
+
+<file path="locales/zh-cn.json">
+{
+  "Language": "简体中文",
+  "Translate": {
+    "loading_text_001": "What is a wave without the ocean? A beginning without an end?",
+    "loading_text_002": "They are different, but they go together.",
+    "loading_text_003": "Now you go among the stars, and I fall among the sand.",
+    "loading_text_004": "We are different. But we go....together.",
+    "loading_text_005": "你知道吗？长按「G」键并滑动鼠标滚轮 可以选择需要扔出的投掷物",
+    "loading_text_006": "5L2g5peg5LiN5peg6IGK77yf",
+    "loading_text_007": "We got a job to do.",
+    "loading_text_008": "游戏太黑看不清？试试Amand's Graphic模组吧",
+    "loading_text_009": "如果你的腿骨折或损毁了，而你没有携带止痛效果，那么你将无法奔跑",
+    "loading_text_010": "还在打开背包治疗自己吗？将鼠标放在胸挂和口袋里的可使用物品上按下数字键以进行快捷键绑定",
+    "loading_text_011": "一把武器耐久越低，就越容易发生故障，当然，近战武器除外",
+    "loading_text_012": "通常来讲，一把枪的上限取决于它最终能安装多少配件",
+    "loading_text_013": "如果你真的几乎花光了所有钱，至少也要装备一个耳机再进行游戏",
+    "loading_text_014": "作为Scav进行游戏时，你不会被其他Scav主动攻击",
+    "loading_text_015": "如果你的手臂骨折或损毁了，而你没有携带止痛效果，那么你将无法平稳的举枪瞄准",
+    "loading_text_016": "骨折可以使用夹板、Grizzly急救包或者手术包进行治疗",
+    "loading_text_017": "如果你的水分或能量值降至0，你几乎无法自然回复耐力",
+    "loading_text_018": "在游戏的前期，不携带近战武器可以让你减轻一些重量负担",
+    "loading_text_019": "在Fence的信任度达到最高等级前，即使你作为Scav进行游戏，也会被Boss攻击",
+    "loading_text_020": "在负重过高时接敌不是个好选择，也许你应该暂时丢掉背包",
+    "loading_text_021": "如果你没有足够的把握，最好不要使用近战武器攻击敌人",
+    "loading_text_022": "作为Scav进入战局和以你的PMC主角色进入战局是不同的，玩家操控的Scav会在随机地点和时间出生，装备也会是随机的",
+    "loading_text_023": "作为Scav进行游戏你不必担心因为死亡导致主角色装备掉落，如果你在对局中成功幸存，所有装备和搜集的物品可以被转移到你的库存中",
+    "loading_text_024": "当你扮演Scav时，你的主要角色将不会得到任何经验值或是升级技能",
+    "loading_text_025": "在战局中双击「O」键可以查看目前可用的撤离点",
+    "loading_text_026": "如果你在战局中停留太久，直至战局的倒计时归零都还没有撤离，你的角色会被认定为在行动中失踪",
+    "loading_text_027": "装填弹匣时，记得先检查它们是否兼容",
+    "loading_text_028": "在战局中时，点击背包页面最上方的健康标签页显示身体各部位的健康状态",
+    "loading_text_029": "购买物品时，记得勾选左上角的「提供所需物品」按钮来支付费用",
+    "loading_text_030": "商人有不同的信任度等级，每次升级都可以解锁新商品",
+    "loading_text_031": "枪械故障时，按下「L」检视枪械确认故障类型，之后按下「Shift + T」排除故障",
+    "loading_text_032": "除了低耐久，长时间射击导致的过热也会增大枪械故障的可能性",
+    "loading_text_033": "生命因何而沉睡?",
+    "loading_text_034": "商人的信任度可以通过完成任务来获取",
+    "loading_text_035": "在很久之前，护甲机制并没有现在这么复杂",
+    "loading_text_036": "护甲的部分防弹插板是可以更换的，右键它并选择搜索关联以查找兼容的物品",
+    "loading_text_037": "右键弹匣并选择搜索关联可以快速找到弹匣对应的弹药，但请注意，你的枪械可能无法发射弹匣所兼容的弹药",
+    "loading_text_038": "SPT曾经叫做SPT-AKI，在Senko-San离开项目组后，AKI的后缀被删除了，这个项目的前身是JET，而那就是另外一段故事了……",
+    "loading_text_039": "BSG并不拥有游戏中大部分武器的版权，恰恰相反，他们在游戏中拥有一段免责声明以避免版权问题",
+    "loading_text_040": "警告，限制区域电力即将重启，门禁将在重启后失效，请所有安保人员保持高度警戒",
+    "loading_text_041": "Also try Delta Force！",
+    "loading_text_042": "Also try Arena Breakout Infinity！",
+    "loading_text_043": "我们还有最后一个办法",
+    "loading_text_044": "哈夫克与你同频，信息予你无限",
+    "loading_text_045": "在时间面前，一切问题都是有解的",
+    "loading_text_046": "厌倦了永不停歇的战斗？也许你可以换一种玩法，比如多捡一些东西",
+    "loading_text_047": "哀余生之须臾，羡长江之无穷……可是长江之水也总有一天会流尽，何况人短暂的一生呢？",
+    "loading_text_048": "Welcome aboard, captain, all systems online.",
+    "loading_text_049": "在很久以前，塔科夫市流传着关于一个神秘组织「末日商会」的传说",
+    "loading_text_050": "逃离塔科夫是一款硬核战术射击游戏，这意味着它永远不可能走向大众",
+    "loading_text_051": "你知道TENET_吗？他是国内塔科夫圈土皇帝（已驾崩）",
+    "loading_text_052": "在很久以前，塔科夫市出现过一个叫Lure的神秘姑娘，你可能见过她",
+    "loading_text_053": "如果你真的很喜欢俄式武器，那么你最好早点卸载逃离塔科夫",
+    "loading_text_054": "固定武器只有在AI手里才能发挥它应有的威力，作为玩家，你最好别碰那东西",
+    "loading_text_055": "通常来讲，击杀BOSS能够取得丰厚的战利品奖励，但是话又说回来，有时候BOSS确实几乎无法给你提供任何收益",
+    "loading_text_056": "本MOD仅在Oddba论坛发布，论坛地址sns.oddba.cn，如果你花钱购买了SPT，我建议你痛骂卖家",
+    "loading_text_057": "请不要站在BTR的行进路线上挂机——好吧，尽量避免任何在野外的挂机行为，那很危险",
+    "loading_text_058": "Beware, beware, the daughter of the sea....",
+    "loading_text_059": "灯塔和街区这两张地图往往会造成极大的资源占用，如果你的电脑配置不够，可能会发生崩溃",
+    "loading_text_060": "部分撤离点需要特定条件才能撤离，它们往往会在你激活撤离点时出现提示，信号弹撤离点除外",
+    "loading_text_061": "「收藏家」任务所需的每一件物品几乎都代表一位塔科夫主播",
+    "loading_text_062": "宇宙再大，也有尽头，而野心永无止境",
+    "loading_text_063": "如果修剪、施肥、浇水、施药都不管用，你该怎么做？",
+    "loading_text_064": "想要攀登山峰，总需低头赶路",
+    "loading_text_065": "海上生明月，天涯共此时",
+    "loading_text_066": "秩序的强大之处不在于律法之下没有黑暗，而在于秩序永远不会认可这种黑暗",
+    "loading_text_067": "无论结果如何，努力总好过放弃",
+    "loading_text_068": "鸟为什么会飞？",
+    "loading_text_069": "人们纪念的是英雄的形象，而不是英雄的真相",
+    "loading_text_070": "你的名字无人知晓，你的功绩永世长存",
+    "loading_text_071": "Son, I want to offer you a second chance.",
+    "loading_text_072": "War, war never changes....",
+    "loading_text_073": "你有见过那个叫Lotus的姑娘吗？我对她手上的某些技术很感兴趣……",
+    "loading_text_074": "金色的美梦要开始躁动了……",
+    "loading_text_075": "站在安稳的时代评论前人铺路时的取舍是一种愚蠢且短视的行为",
+    "loading_text_076": "文明的遗产不应该变成个人的收藏",
+    "loading_text_077": "生活总得继续下去——恐慌和埋怨并不会叫醒太阳",
+    "loading_text_078": "有些人只希望看到他想看的，然后想着法子给你贴标签扣帽子拉仇恨",
+    "loading_text_079": "无论在哪个世界，总有人秉持着守护的志愿，憧憬即将到来的明天",
+    "loading_text_080": "民族主义就像底裤，必要时可以露出来给人看，但不能无时无刻都露在外面",
+    "loading_text_081": "战争是流血的政治，政治是不流血的战争",
+    "loading_text_082": "花开花落，尽归尘土，缘起缘灭，曲终人散",
+    "loading_text_083": "想明白生命的意义吗？想要真正的……活着吗？",
+    "loading_text_084": "人有五名……",
+    "loading_text_085": "我们活着，就是对恶意最大的反抗",
+    "loading_text_086": "吾生也有涯，而知也无涯……令人悲伤的事实",
+    "loading_text_087": "你说的对，但是逃离塔科夫是一款由BSG工作室研发的硬核战术射击游戏……",
+    "loading_text_088": "在时间的尽头，我们终将重逢",
+    "loading_text_089": "没有人的文明毫无意义",
+    "loading_text_090": "憧憬是和理解最遥远的距离",
+    "loading_text_091": "Also try Escape From Duckov!",
+    "loading_text_092": "厌倦了塔科夫的混乱的话，就暂时休息一下吧，我会一直注视着你的，预言家……",
+    "loading_text_093": "我曾目睹星辰焚寂，沉入永夜；我曾见证光年之外，王朝兴灭……",
+    "loading_text_094": "不破其旧，无以立新！",
+    "loading_text_095": "我梦见一片焦土，一株破土而生的新蕊，它迎着朝阳绽放，向我低语呢喃……",
+    "loading_text_096": "人として....生きて下さい",
+    "loading_text_097": "即使引导早已破碎，还请您当上艾尔登之王",
+    "loading_text_098": "生存还是毁灭？这是个问题……",
+    "loading_text_099": "六十二公分，十七公斤重——真沉啊",
+    "loading_text_100": "那些上岸的鱼再也不是鱼了，同样，真正进入太空的人，再也不是人了",
+    "loading_text_101": "Hey, you. You finally awake.",
+    "loading_text_102": "对未来的真正慷慨，是把一切都献给现在"
+  }
+}
+</file>
+
+<file path="Patch/AttitudeDisplayPatch.cs">
+using EFT;
+using HarmonyLib;
+using System.Text;
+using SkillEffect = JsonType.DamageEffectSpecification;
+
+
+namespace EternalCycleClient.Patch
+{
+    [HarmonyPatch(typeof(SkillEffect), nameof(SkillEffect.GetStringValue))]
+    public class AttitudeDisplayPatch
+    {
+        [HarmonyPrefix]
+        public static bool GetStringValue_Prefix(SkillEffect __instance, string postfix, ref string __result)
+        {
+            StringBuilder stringBuilder = new StringBuilder();
+
+            // 1. 处理 Delay
+            if (__instance.Delay > 1f)
+            {
+                stringBuilder.Append(string.Format("{0} {1}{2}",
+                    "Del.".Localized(null),
+                    __instance.Delay,
+                    "sec".Localized(null)));
+            }
+
+            // 2. 修改后的 Duration 逻辑（核心修改点）
+            if (__instance.Duration > 0f)
+            {
+                if (stringBuilder.Length > 0)
+                {
+                    stringBuilder.Append(" / ");
+                }
+
+                // 判断是否超过7200秒
+                if (__instance.Duration >= 7200f)
+                {
+                    stringBuilder.Append("Infinity".Localized(null)); // 直接显示 Infinity，不附加 "Dur." 和 "sec"
+                }
+                else
+                {
+                    stringBuilder.Append(string.Format("{0} {1}{2}",
+                        "Dur.".Localized(null),
+                        __instance.Duration,
+                        "sec".Localized(null)));
+                }
+            }
+
+            // 3. 处理 Cost
+            if (__instance.Cost > 0)
+            {
+                if (stringBuilder.Length > 0)
+                {
+                    stringBuilder.Append(" / ");
+                }
+                stringBuilder.Append(__instance.Cost.ToString() + " HP");
+            }
+
+            // 4. 附加 postfix（如果存在）
+            if (!string.IsNullOrEmpty(postfix))
+            {
+                stringBuilder.Append(postfix);
+            }
+
+            __result = stringBuilder.ToString();
+            return false; // 跳过原始方法
+        }
+
+
+    }
+
+    [HarmonyPatch(typeof(SkillEffect), nameof(SkillEffect.GetFullStringValue))]
+    public class VulcanCore_AttitudeDisplayTooltipPatch
+    {
+        [HarmonyPrefix]
+        public static bool GetFullStringValue_Prefix(SkillEffect __instance, string displayName, ref string __result)
+        {
+            // 保持原有的空值检查逻辑
+            if (__instance.Delay.IsZero() && __instance.Duration.IsZero() && __instance.Cost == 0)
+            {
+                __result = string.Empty;
+                return false;
+            }
+
+            StringBuilder stringBuilder = new StringBuilder();
+            stringBuilder.Append(displayName.Localized(null));
+
+            // 延迟显示保持不变
+            if (__instance.Delay > 1f)
+            {
+                stringBuilder.Append(string.Format("\n{0} {1}{2}",
+                    "Delay".Localized(null),
+                    __instance.Delay,
+                    "sec".Localized(null)));
+            }
+
+            // 修改后的持续时间显示逻辑
+            if (__instance.Duration > 0f)
+            {
+                string durationValue = __instance.Duration >= 7200f
+                    ? "Infinity".Localized(null)
+                    : __instance.Duration.ToString() + "sec".Localized(null);
+
+                stringBuilder.Append(string.Format("\n{0} {1}",
+                    "Duration".Localized(null),
+                    durationValue));
+            }
+
+            // 消耗显示保持不变
+            if (__instance.Cost > 0)
+            {
+                stringBuilder.Append("\n" + __instance.Cost.ToString() + " HP");
+            }
+
+            __result = stringBuilder.ToString();
+            return false; // 跳过原始方法
+        }
+
+
+    }
+}
+</file>
+
+<file path="Patch/BuffDisplayPatch.cs">
+using EFT;
+using HarmonyLib;
+using System;
+using System.Text;
+using EFT.HealthSystem;
+using BuffEffect = EFT.HealthSystem.EffectsSettings.StimulatorSettings.StimulatorBuffSettings;
+
+
+namespace EternalCycleClient.Patch
+{
+    [HarmonyPatch(typeof(BuffEffect), nameof(BuffEffect.GetStringValue))]
+    public class BuffDisplayPatch
+    {
+        [HarmonyPrefix]
+        public static bool GetStringValue_Prefix(BuffEffect __instance, ref string __result)
+        {
+            string str = __instance.BuffColoredStringValue();
+            bool flag = __instance.Value.IsZero();
+            StringBuilder stringBuilder = new StringBuilder();
+
+            // 处理 Chance
+            if (__instance.Chance < 1f)
+            {
+                stringBuilder.Append(string.Format("{0} {1}%",
+                    "UI/ItemAttribute/Chance".Localized(null),
+                    Math.Round((double)(__instance.Chance * 100f))));
+            }
+
+            // 处理 Delay
+            if (__instance.Delay > 1f)
+            {
+                if (stringBuilder.Length > 0) stringBuilder.Append(" / ");
+                stringBuilder.Append(string.Format("{0} {1}{2}",
+                    "Del.".Localized(null),
+                    __instance.Delay,
+                    "sec".Localized(null)));
+            }
+
+            // 修改后的 Duration 逻辑
+            if (__instance.Duration > 0f)
+            {
+                if (stringBuilder.Length > 0) stringBuilder.Append(" / ");
+
+                // 核心修改点：判断是否超过7200秒
+                if (__instance.Duration < 7200f)
+                {
+                    stringBuilder.Append(string.Format("{0} {1}{2}",
+                        "Dur.".Localized(null),
+                        __instance.Duration,
+                        "sec".Localized(null)));
+                }
+                else
+                {
+                    // 显示 Infinity（需确保本地化支持）
+                    stringBuilder.Append(string.Format("{0}",
+                        "Infinity".Localized(null)));
+                }
+
+                // 附加效果值（如果非零）
+                if (!flag)
+                {
+                    stringBuilder.Append(" (" + str + ")");
+                }
+            }
+            else if (!flag) // 处理 Duration <=0 但有效果值的情况
+            {
+                if (stringBuilder.Length > 0) stringBuilder.Append(" / ");
+                stringBuilder.Append(" " + str);
+            }
+
+            __result = stringBuilder.ToString();
+            return false; // 跳过原始方法
+        }
+
+
+    }
+
+    [HarmonyPatch(typeof(BuffEffect), nameof(BuffEffect.GetFullStringValue))]
+    public class VulcanCore_BuffDisplayTooltipPatch
+    {
+        [HarmonyPrefix]
+        public static bool Prefix(BuffEffect __instance, string displayName, ref string __result)
+        {
+            bool flag = __instance.Value.IsZero();
+
+            // 保持原有的空值检查逻辑
+            if (__instance.Delay.IsZero() && (__instance.Duration.IsZero() || __instance.Duration >= 7200f) && __instance.Value.IsZero())
+            {
+                __result = null;
+                return false;
+            }
+
+            StringBuilder stringBuilder = new StringBuilder();
+            string text = __instance.BuffName.Localized(null);
+
+            // 保持原有的名称处理逻辑
+            if (flag && !BuffEffect._ignoreAppliesPrefix.Contains(__instance.BuffName))
+            {
+                stringBuilder.Append("Applies".Localized(null) + " ");
+                text = text.ToLower();
+            }
+            stringBuilder.Append(text);
+
+            // 保持原有的数值显示逻辑
+            if (!flag)
+            {
+                stringBuilder.Append("\n");
+                stringBuilder.Append((__instance.Value.Positive() ? "Increase".Localized(null) : "Decrease".Localized(null)) + " ");
+                stringBuilder.Append(__instance.BuffAbsoluteStringValue());
+            }
+
+            // 概率显示保持不变
+            if (__instance.Chance < 1f)
+            {
+                stringBuilder.Append(string.Format("\n{0} {1}%", "UI/ItemAttribute/Chance".Localized(null), Math.Round((double)(__instance.Chance * 100f))));
+            }
+
+            // 延迟显示保持不变
+            if (__instance.Delay > 1f)
+            {
+                stringBuilder.Append(string.Format("\n{0} {1}{2}", "Delay".Localized(null), __instance.Delay, "sec".Localized(null)));
+            }
+
+            // 修改持续时间显示逻辑
+            if (__instance.Duration > 0f)
+            {
+                string durationText = __instance.Duration < 7200f
+                    ? string.Format("{0}{1}", __instance.Duration, "sec".Localized(null))
+                    : "Infinity".Localized(null);  // 只替换数值部分为Infinity
+
+                stringBuilder.AppendFormat("\n{0} {1}", "Duration".Localized(null), durationText);
+            }
+
+            __result = stringBuilder.ToString();
+            return false; // 跳过原始方法
+        }
+
+
+    }
+}
+</file>
+
+<file path="Patch/DoorUnlockPatch.cs">
+using Diz.LanguageExtensions;
+using EFT;
+using EFT.Interactive;
+using EFT.InventoryLogic;
+using HarmonyLib;
+using ItemTransactionManagerResult = Diz.LanguageExtensions.OperationResult<EFT.InventoryLogic.DiscardResult>;
+
+namespace EternalCycleClient.Patch
+{
+    [HarmonyPatch(typeof(WorldInteractiveObject), nameof(WorldInteractiveObject.UnlockOperation))]
+    public class DoorUnlockPatch
+    {
+        [HarmonyPostfix]
+        public static void Postfix(WorldInteractiveObject __instance, KeyComponent key, Player player, WorldInteractiveObject wio, ref Option<UnlockResult> __result)
+        {
+            //sbBSG
+            if (__result.Failed && __result.Error is StringError)
+            {
+                key.NumberOfUsages++;
+                ItemTransactionManagerResult gstruct = default;
+
+                if (key.NumberOfUsages >= key.Template.MaximumNumberOfUsage && key.Template.MaximumNumberOfUsage > 0)
+                {
+                    gstruct = ItemManipulator.Discard(
+                        key.Item,
+                        (ItemController)key.Item.Parent.GetOwner(),
+                        false
+                    );
+
+                    if (gstruct.Failed)
+                    {
+                        __result = gstruct.Error;
+                        return;
+                    }
+                }
+
+                // 4. 强行篡改结果：成功开门！
+                __result = new UnlockResult(key, gstruct.Value, true);
+            }
+        }
+    }
+}
+</file>
+
+<file path="Patch/FakeKeyPatch.cs">
+using EFT;
+using EFT.Interactive;
+using EFT.InventoryLogic;
+using HarmonyLib;
+using System.Linq;
+using System.Text.RegularExpressions;
+
+
+namespace EternalCycleClient.Patch
+{
+    [HarmonyPatch(typeof(PlayerOwner), nameof(PlayerOwner.GetKey))]
+    public class FakeKeyPatch
+    {
+        [HarmonyPrefix]
+        public static bool Prefix(PlayerOwner __instance, WorldInteractiveObject worldInteractiveObject, ref KeyComponent __result)
+        {
+            // 获取所有符合条件的仿制钥匙
+            var fakekeys = __instance.Player.InventoryController.Inventory.Equipment.GetItemComponentsInChildren<KeyComponent>(
+                onlyMerged: false
+            ).Where(x =>
+            {
+                string description = LocalizationManager._instance.LocalizedValue(x.Template.KeyId + " Description");
+                if (ContainsObjectId(description))
+                {
+                    string targetId = ExtractFirstObjectId(description);
+                    if (targetId == "A0A0A0A0FDFFFF000A0A0A0A" ||
+                        ContainsWrappedObjectId(description, worldInteractiveObject.KeyId))
+                        return true;
+                }
+                return false;
+            });
+
+            // 选择最优仿制钥匙
+            var bestFakeKey = fakekeys
+                .OrderByDescending(x => x.Template.MaximumNumberOfUsage == 0) // 无限耐久排最前
+                .ThenBy(x =>
+                {
+                    // 计算真实耐久
+                    if (x.Template.MaximumNumberOfUsage == 0)
+                        return int.MaxValue; // 无限耐久单独优先，不参与耐久比较
+                    return x.Template.MaximumNumberOfUsage - x.NumberOfUsages;
+                })
+                .FirstOrDefault();
+
+            // 普通钥匙匹配
+            var normalkey = __instance.Player.InventoryController.Inventory.Equipment.GetItemComponentsInChildren<KeyComponent>(
+                onlyMerged: false
+                )
+                .Where(x => x.Template.KeyId == worldInteractiveObject.KeyId) // 先筛选出正确的钥匙
+                .OrderByDescending(x => x.Template.MaximumNumberOfUsage == 0) // 1. 无限耐久排最前
+                .ThenBy(x =>
+                    {
+                        // 2. 剩余耐久少的排前面（优先用快坏掉的钥匙）
+                        if (x.Template.MaximumNumberOfUsage == 0) return int.MaxValue;
+                        return x.Template.MaximumNumberOfUsage - x.NumberOfUsages;
+                    })
+                    .ThenBy(x => x.Item.SpawnedInSession) // 3. 核心：优先使用不带勾的！
+                    .FirstOrDefault();
+
+            // 结果优先使用仿制钥匙
+            __result = bestFakeKey ?? normalkey;
+
+            return false; // 跳过原始方法
+        }
+
+        // 正则：匹配「」包裹的24位十六进制字符串
+        private static readonly Regex ObjectIdRegex = new Regex("「([0-9a-fA-F]{24})」", RegexOptions.Compiled);
+
+        /// <summary>
+        /// 判断字符串是否包含至少一个 ObjectId
+        /// </summary>
+        public static bool ContainsObjectId(string input)
+        {
+            if (string.IsNullOrEmpty(input)) return false;
+            return ObjectIdRegex.IsMatch(input);
+        }
+
+        /// <summary>
+        /// 提取字符串中第一个 ObjectId，如果没有匹配返回 null
+        /// </summary>
+        public static string ExtractFirstObjectId(string input)
+        {
+            if (string.IsNullOrEmpty(input)) return null;
+
+            Match match = ObjectIdRegex.Match(input);
+            if (match.Success)
+            {
+                return match.Groups[1].Value;
+            }
+            return null;
+        }
+
+        /// <summary>
+        /// 提取字符串中所有被「」包裹的 24 位哈希 ObjectId，并判断是否包含指定目标
+        /// </summary>
+        /// <param name="input">输入字符串</param>
+        /// <param name="target">要查找的目标 ObjectId</param>
+        /// <returns>true 如果目标 ObjectId 在提取结果中，否则 false</returns>
+        public static bool ContainsWrappedObjectId(string input, string target)
+        {
+            if (string.IsNullOrEmpty(input) || string.IsNullOrEmpty(target))
+                return false;
+
+            MatchCollection matches = ObjectIdRegex.Matches(input);
+            foreach (Match match in matches)
+            {
+                if (match.Groups[1].Value == target)
+                    return true;
+            }
+
+            return false;
+        }
+    }
+}
+</file>
+
+<file path="Patch/HideoutSpritePatch.cs">
+using EFT;
+using EFT.Hideout;
+using HarmonyLib;
+using UnityEngine;
+using System;
+using HideoutResourceManager = EFT.Hideout.HideoutCustomizationController;
+using EternalCycleClient.Utils;
+
+namespace EternalCycleClient.Patch
+{
+    [HarmonyPatch(typeof(HideoutCustomizationIcons), nameof(HideoutCustomizationIcons.GetSprite))]
+    public class HideoutGetSpritePatch
+    {
+        public static void Postfix(string id, ref Sprite __result)
+        {
+            ClientResourceManager.DecoIconDict.TryGetValue(id, out Sprite sprite);
+            if (sprite != null)
+            {
+                __result = sprite;
+            }
+        }
+    }
+    [HarmonyPatch(typeof(HideoutResourceManager), nameof(HideoutResourceManager.InstallCustomization), new Type[] { typeof(ResourceKey), typeof(EHideoutCustomizationType) })]
+    public class ShootingRangeTargetPatch
+    {
+        public static bool Prefix(HideoutResourceManager __instance, ResourceKey resourceKey, EHideoutCustomizationType customizationType)
+        {
+            if (customizationType != EHideoutCustomizationType.ShootingRangeMark)
+            {
+                return true;
+            }
+            string text = resourceKey.ToAssetName();
+            if (text == null) return true;
+            if (ClientResourceManager.TargetDict.TryGetValue(text, out Texture2D customTargetTex))
+            {
+                // 3. 是我们自己的靶纸！我们自己贴图，然后 return false 阻止原版报错
+                __instance._customizationItemsInstaller.SetPaperTargetTexture(customTargetTex);
+
+                return false; // 只有处理【我们自己的】资源时，才拦截！
+            }
+            return true;
+        }
+    }
+}
+</file>
+
+<file path="Patch/KeyCardDoorUnlockPatch.cs">
+using Diz.LanguageExtensions;
+using EFT;
+using EFT.Interactive;
+using EFT.InventoryLogic;
+using HarmonyLib;
+using ItemTransactionManagerResult = Diz.LanguageExtensions.OperationResult<EFT.InventoryLogic.DiscardResult>;
+
+namespace EternalCycleClient.Patch
+{
+    [HarmonyPatch(typeof(KeycardDoor), nameof(KeycardDoor.UnlockOperation))]
+    public class KeyCardDoorUnlockPatch
+    {
+        [HarmonyPostfix]
+        public static void Postfix(KeycardDoor __instance, KeyComponent key, ref Option<UnlockResult> __result)
+        {
+            // 1. 如果原版方法报错了，或者原版已经判断成功了（钥匙匹配），我们直接退出，不插手。
+            if (__result.Failed || __result.Value == null || __result.Value.Succeed)
+            {
+                return;
+            }
+
+            // 2. 运行到这里，说明原版方法拒绝了这把钥匙（__result.Value.Succeed == false）。
+            // 此时我们来检测它是不是我们的“万能假钥匙”。
+            try
+            {
+                string desc = LocalizationManager._instance.LocalizedValue(key.Template.KeyId + " Description");
+                bool isFakeKey = FakeKeyPatch.ExtractFirstObjectId(desc) == "A0A0A0A0FDFFFF000A0A0A0A" ||
+                                 FakeKeyPatch.ContainsWrappedObjectId(desc, __instance.KeyId);
+
+                // 如果连我们的假钥匙判断也没通过，说明它就是一把错的钥匙，直接退出。
+                if (!isFakeKey)
+                {
+                    return;
+                }
+            }
+            catch
+            {
+                // 防御性编程：如果解析字符串报错，当作不匹配处理
+                return;
+            }
+
+            // 3. 核心：它是我们的假钥匙！
+            // 因为原版方法提前退出了，没有扣耐久，所以我们必须在这里手动扣除耐久并处理销毁逻辑。
+            key.NumberOfUsages++;
+            ItemTransactionManagerResult discardResult = default;
+
+            if (key.NumberOfUsages >= key.Template.MaximumNumberOfUsage && key.Template.MaximumNumberOfUsage > 0)
+            {
+                discardResult = ItemManipulator.Discard(
+                    key.Item,
+                    (ItemController)key.Item.Parent.GetOwner(),
+                    false
+                );
+
+                if (discardResult.Failed)
+                {
+                    // 如果销毁钥匙的操作失败了，返回错误信息
+                    __result = discardResult.Error;
+                    return;
+                }
+            }
+
+            // 4. 大功告成！强行把结果扭转为成功，并把交易结果塞进去。
+            __result = new UnlockResult(key, discardResult.Value, succeed: true);
+        }
+    }
+}
+</file>
+
+<file path="Patch/LoadTextPatch.cs">
+using EFT;
+using HarmonyLib;
+using System;
+using System.Collections.Generic;
+
+namespace EternalCycleClient.Patch
+{
+    [HarmonyPatch(typeof(LocalizationExtensions), nameof(LocalizationExtensions.Localized), new Type[] { typeof(string), typeof(string) })]
+    public class LoadTextPatch
+    {
+        private static readonly Random random = new Random();
+
+        private static readonly Dictionary<string, string> LoadingTextDicrt = new Dictionary<string, string>()
+        {
+            { "loading_text_001", "What is a wave without the ocean? A beginning without an end?" },
+            { "loading_text_002", "They are different, but they go together." },
+            { "loading_text_003", "Now you go among the stars, and I fall among the sand." },
+            { "loading_text_004", "We are different. But we go....together." },
+            { "loading_text_005", "你知道吗？长按「G」键并滑动鼠标滚轮 可以选择需要扔出的投掷物" },
+            { "loading_text_006", "5L2g5peg5LiN5peg6IGK77yf" },
+            { "loading_text_007", "We got a job to do." },
+            { "loading_text_008", "游戏太黑看不清？试试Amand's Graphic模组吧" },
+            { "loading_text_009", "如果你的腿骨折或损毁了，而你没有携带止痛效果，那么你将无法奔跑" },
+            { "loading_text_010", "还在打开背包治疗自己吗？将鼠标放在胸挂和口袋里的可使用物品上按下数字键以进行快捷键绑定" },
+            { "loading_text_011", "一把武器耐久越低，就越容易发生故障，当然，近战武器除外" },
+            { "loading_text_012", "通常来讲，一把枪的上限取决于它最终能安装多少配件" },
+            { "loading_text_013", "如果你真的几乎花光了所有钱，至少也要装备一个耳机再进行游戏" },
+            { "loading_text_014", "作为Scav进行游戏时，你不会被其他Scav主动攻击" },
+            { "loading_text_015", "如果你的手臂骨折或损毁了，而你没有携带止痛效果，那么你将无法平稳的举枪瞄准" },
+            { "loading_text_016", "骨折可以使用夹板、Grizzly急救包或者手术包进行治疗" },
+            { "loading_text_017", "如果你的水分或能量值降至0，你几乎无法自然回复耐力" },
+            { "loading_text_018", "在游戏的前期，不携带近战武器可以让你减轻一些重量负担" },
+            { "loading_text_019", "在Fence的信任度达到最高等级前，即使你作为Scav进行游戏，也会被Boss攻击" },
+            { "loading_text_020", "在负重过高时接敌不是个好选择，也许你应该暂时丢掉背包" },
+            { "loading_text_021", "如果你没有足够的把握，最好不要使用近战武器攻击敌人" },
+            { "loading_text_022", "作为Scav进入战局和以你的PMC主角色进入战局是不同的，玩家操控的Scav会在随机地点和时间出生，装备也会是随机的" },
+            { "loading_text_023", "作为Scav进行游戏你不必担心因为死亡导致主角色装备掉落，如果你在对局中成功幸存，所有装备和搜集的物品可以被转移到你的库存中" },
+            { "loading_text_024", "当你扮演Scav时，你的主要角色将不会得到任何经验值或是升级技能" },
+            { "loading_text_025", "在战局中双击「O」键可以查看目前可用的撤离点" },
+            { "loading_text_026", "如果你在战局中停留太久，直至战局的倒计时归零都还没有撤离，你的角色会被认定为在行动中失踪" },
+            { "loading_text_027", "装填弹匣时，记得先检查它们是否兼容" },
+            { "loading_text_028", "在战局中时，点击背包页面最上方的健康标签页显示身体各部位的健康状态" },
+            { "loading_text_029", "购买物品时，记得勾选左上角的「提供所需物品」按钮来支付费用" },
+            { "loading_text_030", "商人有不同的信任度等级，每次升级都可以解锁新商品" },
+            { "loading_text_031", "枪械故障时，按下「L」检视枪械确认故障类型，之后按下「Shift + T」排除故障" },
+            { "loading_text_032", "除了低耐久，长时间射击导致的过热也会增大枪械故障的可能性" },
+            { "loading_text_033", "生命因何而沉睡?" },
+            { "loading_text_034", "商人的信任度可以通过完成任务来获取" },
+            { "loading_text_035", "在很久之前，护甲机制并没有现在这么复杂" },
+            { "loading_text_036", "护甲的部分防弹插板是可以更换的，右键它并选择搜索关联以查找兼容的物品" },
+            { "loading_text_037", "右键弹匣并选择搜索关联可以快速找到弹匣对应的弹药，但请注意，你的枪械可能无法发射弹匣所兼容的弹药" },
+            { "loading_text_038", "SPT曾经叫做SPT-AKI，在Senko-San离开项目组后，AKI的后缀被删除了，这个项目的前身是JET，而那就是另外一段故事了……" },
+            { "loading_text_039", "BSG并不拥有游戏中大部分武器的版权，恰恰相反，他们在游戏中拥有一段免责声明以避免版权问题" },
+            { "loading_text_040", "警告，限制区域电力即将重启，门禁将在重启后失效，请所有安保人员保持高度警戒" },
+            { "loading_text_041", "Also try Delta Force！" },
+            { "loading_text_042", "Also try Arena Breakout Infinity！" },
+            { "loading_text_043", "我们还有最后一个办法" },
+            { "loading_text_044", "哈夫克与你同频，信息予你无限" },
+            { "loading_text_045", "在时间面前，一切问题都是有解的" },
+            { "loading_text_046", "厌倦了永不停歇的战斗？也许你可以换一种玩法，比如多捡一些东西" },
+            { "loading_text_047", "哀余生之须臾，羡长江之无穷……可是长江之水也总有一天会流尽，何况人短暂的一生呢？" },
+            { "loading_text_048", "Welcome aboard, captain, all systems online." },
+            { "loading_text_049", "在很久以前，塔科夫市流传着关于一个神秘组织「末日商会」的传说" },
+            { "loading_text_050", "逃离塔科夫是一款硬核战术射击游戏，这意味着它永远不可能走向大众" },
+            { "loading_text_051", "你知道TENET_吗？他是国内塔科夫圈土皇帝（已驾崩）" },
+            { "loading_text_052", "在很久以前，塔科夫市出现过一个叫Lure的神秘姑娘，你可能见过她" },
+            { "loading_text_053", "如果你真的很喜欢俄式武器，那么你最好早点卸载逃离塔科夫" },
+            { "loading_text_054", "固定武器只有在AI手里才能发挥它应有的威力，作为玩家，你最好别碰那东西" },
+            { "loading_text_055", "通常来讲，击杀BOSS能够取得丰厚的战利品奖励，但是话又说回来，有时候BOSS确实几乎无法给你提供任何收益" },
+            { "loading_text_056", "本MOD仅在Oddba论坛发布，论坛地址sns.oddba.cn，如果你花钱购买了SPT，我建议你痛骂卖家" },
+            { "loading_text_057", "请不要站在BTR的行进路线上挂机——好吧，尽量避免任何在野外的挂机行为，那很危险" },
+            { "loading_text_058", "Beware, beware, the daughter of the sea...." },
+            { "loading_text_059", "灯塔和街区这两张地图往往会造成极大的资源占用，如果你的电脑配置不够，可能会发生崩溃" },
+            { "loading_text_060", "部分撤离点需要特定条件才能撤离，它们往往会在你激活撤离点时出现提示，信号弹撤离点除外" },
+            { "loading_text_061", "「收藏家」任务所需的每一件物品几乎都代表一位塔科夫主播" },
+            { "loading_text_062", "宇宙再大，也有尽头，而野心永无止境" },
+            { "loading_text_063", "如果修剪、施肥、浇水、施药都不管用，你该怎么做？" },
+            { "loading_text_064", "想要攀登山峰，总需低头赶路" },
+            { "loading_text_065", "海上生明月，天涯共此时" },
+            { "loading_text_066", "秩序的强大之处不在于律法之下没有黑暗，而在于秩序永远不会认可这种黑暗" },
+            { "loading_text_067", "无论结果如何，努力总好过放弃" },
+            { "loading_text_068", "鸟为什么会飞？" },
+            { "loading_text_069", "人们纪念的是英雄的形象，而不是英雄的真相" },
+            { "loading_text_070", "你的名字无人知晓，你的功绩永世长存" },
+            { "loading_text_071", "Son, I want to offer you a second chance." },
+            { "loading_text_072", "War, war never changes...." },
+            { "loading_text_073", "你有见过那个叫Lotus的姑娘吗？我对她手上的某些技术很感兴趣……" },
+            { "loading_text_074", "金色的美梦要开始躁动了……" },
+            { "loading_text_075", "站在安稳的时代评论前人铺路时的取舍是一种愚蠢且短视的行为" },
+            { "loading_text_076", "文明的遗产不应该变成个人的收藏" },
+            { "loading_text_077", "生活总得继续下去——恐慌和埋怨并不会叫醒太阳" },
+            { "loading_text_078", "有些人只希望看到他想看的，然后想着法子给你贴标签扣帽子拉仇恨" },
+            { "loading_text_079", "无论在哪个世界，总有人秉持着守护的志愿，憧憬即将到来的明天" },
+            { "loading_text_080", "民族主义就像底裤，必要时可以露出来给人看，但不能无时无刻都露在外面" },
+            { "loading_text_081", "战争是流血的政治，政治是不流血的战争" },
+            { "loading_text_082", "花开花落，尽归尘土，缘起缘灭，曲终人散" },
+            { "loading_text_083", "想明白生命的意义吗？想要真正的……活着吗？" },
+            { "loading_text_084", "人有五名……" },
+            { "loading_text_085", "我们活着，就是对恶意最大的反抗" },
+            { "loading_text_086", "吾生也有涯，而知也无涯……令人悲伤的事实" },
+            { "loading_text_087", "你说的对，但是逃离塔科夫是一款由BSG工作室研发的硬核战术射击游戏……" },
+            { "loading_text_088", "在时间的尽头，我们终将重逢" },
+            { "loading_text_089", "没有人的文明毫无意义" },
+            { "loading_text_090", "憧憬是和理解最遥远的距离" },
+            { "loading_text_091", "Also try Escape From Duckov!" },
+            { "loading_text_092", "厌倦了塔科夫的混乱的话，就暂时休息一下吧，我会一直注视着你的，预言家……" },
+            { "loading_text_093", "我曾目睹星辰焚寂，沉入永夜；我曾见证光年之外，王朝兴灭……" },
+            { "loading_text_094", "不破其旧，无以立新！" },
+            { "loading_text_095", "我梦见一片焦土，一株破土而生的新蕊，它迎着朝阳绽放，向我低语呢喃……" },
+            { "loading_text_096", "人として....生きて下さい" },
+            { "loading_text_097", "即使引导早已破碎，还请您当上艾尔登之王" },
+            { "loading_text_098", "生存还是毁灭？这是个问题……" },
+            { "loading_text_099", "六十二公分，十七公斤重——真沉啊" },
+            { "loading_text_100", "那些上岸的鱼再也不是鱼了，同样，真正进入太空的人，再也不是人了" },
+            { "loading_text_101", "Hey, you. You finally awake." },
+            { "loading_text_102", "对未来的真正慷慨，是把一切都献给现在" }
+        };
+
+        [HarmonyPostfix]
+        public static void Postfix(string id, string prefix, ref string __result)
+        {
+            if (id == "Profile data loading...")
+            {
+                __result = $"<color=#FFFF55>{(LoadingTextDicrt.TryGetValue($"loading_text_{random.Next(1, 103):D3}", out var val) ? val : "奇怪，你怎么会看到这个？你的游戏好像出了点问题……")}</color>";
+            }
+        }
+    }
+}
+</file>
+
+<file path="Utils/ClientResourceManager.cs">
+using EFT;
+using EFT.UI.DragAndDrop;
+using EFT.Utilities;
+using EternalCycleClient.Class;
+using Newtonsoft.Json;
+using SPT.Common.Http;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Security.Cryptography;
+using UnityEngine;
+
+namespace EternalCycleClient.Utils
+{
+    public class ClientResourceManager
+    {
+        public static Dictionary<string, Sprite> DecoIconDict { get; private set; } = new Dictionary<string, Sprite>();
+        public static Dictionary<string, Texture2D> TargetDict { get; private set; } = new Dictionary<string, Texture2D>();
+        public static void LoadResources(string url, string modPath, string localCacheRootDir)
+        {
+            string correctPath = Path.Combine(modPath, localCacheRootDir);
+            string normalizedRootDir = correctPath.Replace('\\', '/');
+            if (!normalizedRootDir.EndsWith("/")) normalizedRootDir += "/";
+
+            if (!Directory.Exists(normalizedRootDir))
+            {
+                Directory.CreateDirectory(normalizedRootDir);
+            }
+
+            // 1. 扫描本地
+            var request = new SyncResourceRequest();
+            // 客户端搜索本地缓存时也可以扫描全部，防止玩家乱建文件夹
+            var localFiles = Directory.GetFiles(normalizedRootDir);
+
+            foreach (var filePath in localFiles)
+            {
+                // 【核心修改】：直接拿纯文件名当 Key
+                string fileName = Path.GetFileName(filePath);
+
+                string md5 = GetFileMD5(filePath);
+                if (!string.IsNullOrEmpty(md5))
+                {
+                    request.ClientHashes[fileName] = md5;
+                }
+            }
+
+            string jsonPayload = JsonConvert.SerializeObject(request);
+
+            // 2. 发起网络请求
+            string jsonResponse = RequestHandler.PostJson(url, jsonPayload);
+
+            if (string.IsNullOrWhiteSpace(jsonResponse))
+            {
+                Console.WriteLine("[资源同步] 服务端未返回任何数据！");
+                return;
+            }
+
+            var response = JsonConvert.DeserializeObject<SyncResourceResponse>(jsonResponse);
+            if (response == null) return;
+
+            // 3. 垃圾回收
+            foreach (var filePath in localFiles)
+            {
+                // 【核心修改】：用文件名去服务端的合法名单里比对
+                string fileName = Path.GetFileName(filePath);
+
+                if (!response.ValidFiles.Contains(fileName))
+                {
+                    File.Delete(filePath);
+                }
+            }
+
+            // 4. 增量更新写入 (扁平化写入)
+            foreach (var kvp in response.FilesToUpdate)
+            {
+                // 这里的 kvp.Key 现在是纯文件名 (如 "rig_01.bundle")
+                string fileName = kvp.Key;
+                string base64Data = kvp.Value;
+
+                // 【核心修改】：直接拼在根目录下，实现扁平化存储
+                string savePath = Path.Combine(normalizedRootDir, fileName);
+
+                byte[] fileData = Convert.FromBase64String(base64Data);
+                File.WriteAllBytes(savePath, fileData);
+
+                Console.WriteLine($"[资源同步] 下载/更新了资源: {fileName}");
+            }
+
+            Console.WriteLine($"[资源同步] 同步完成！共更新 {response.FilesToUpdate.Count} 个 文件。");
+        }
+
+        public static void LoadVoice(string url)
+        {
+
+            // 2. 发起网络请求
+            string jsonResponse = RequestHandler.PostJson(url, "What is a wave without the ocean？A beginning without an end？");
+
+            if (string.IsNullOrWhiteSpace(jsonResponse))
+            {
+                Console.WriteLine("[资源同步] 服务端未返回任何数据！");
+                return;
+            }
+
+            var response = JsonConvert.DeserializeObject<VoiceResourceRequest>(jsonResponse);
+            if (response == null) return;
+
+            foreach (var kvp in response.VoicePath)
+            {
+                InGameBundles._phrasesPaths.TryAdd(kvp.Key, kvp.Value);
+
+                Console.WriteLine($"[资源同步] 成果添加了声线资源: {kvp.Value}");
+            }
+        }
+
+        public static void LoadRigLayout(string modPath, string folderPath)
+        {
+            string fullPath = Path.Combine(modPath, folderPath);
+            if (!Directory.Exists(fullPath))
+            {
+                //实例模式真死妈了, 等我下午开完药回来我就写个Logger, 操你妈
+                //Console.WriteLine(12312312);
+                return;
+            }
+
+            foreach (string file in Directory.GetFiles(fullPath))
+            {
+                AssetBundle bundle = AssetBundle.LoadFromFile(file);
+
+                if (bundle == null)
+                {
+                    continue;
+                }
+
+                GameObject[] prefabs = bundle.LoadAllAssets<GameObject>();
+
+                foreach (GameObject prefab in prefabs)
+                {
+                    var gridView = prefab.GetComponent<ContainedGridsView>();
+                    if (gridView != null)
+                    {
+                        Console.WriteLine($"loading gridview");
+                        var key = $"UI/Rig Layouts/{prefab.name}";
+                        if (!ResourcesCache._storage.ContainsKey(key))
+                        {
+                            Console.WriteLine($"gridview added successful: {key}");
+                            //Console.WriteLine($"Test: {gridView.GridViews}");
+                            ResourcesCache._storage.Add(key, gridView);
+                        }
+
+                    }
+                }
+            }
+        }
+
+        public static void LoadSlotIcon(string modPath, string folderPath)
+        {
+            string fullPath = Path.Combine(modPath, folderPath);
+            if (!Directory.Exists(fullPath))
+            {
+                return;
+            }
+
+            foreach (string file in Directory.GetFiles(fullPath))
+            {
+                string fileName = Path.GetFileName(file).Replace(".png", "").Replace(".jpg", "");
+                //CacheResourcesPopAbstractClass.Dictionary_0.Add($"Slots/{fileName}", fileName);
+                var sprite = TextureUtils.SimpleCreateSprite(TextureUtils.LoadFromFile(file, 1, 1), 100);
+                ResourcesCache._storage.Add($"Slots/{fileName}", sprite);
+                for (var i = 0; i < 30; i++)
+                {
+                    var key = $"Slots/{fileName}_{i:D3}";
+                    ResourcesCache._storage.Add(key, sprite);
+                    Console.WriteLine($"slot icon added successful: {key}");
+                }
+            }
+        }
+
+        public static void LoadDecoIcon(string modPath, string folderPath)
+        {
+            string fullPath = Path.Combine(modPath, folderPath);
+            if (!Directory.Exists(fullPath))
+            {
+                return;
+            }
+
+            foreach (string file in Directory.GetFiles(fullPath))
+            {
+                string fileName = Path.GetFileName(file).Replace(".png", "").Replace(".jpg", "");
+                var sprite = TextureUtils.SimpleCreateSprite(TextureUtils.LoadFromFile(file, 1, 1), 100);
+                DecoIconDict.TryAdd(fileName, sprite);
+
+            }
+        }
+
+        public static void LoadTarget(string modPath, string folderPath)
+        {
+            string fullPath = Path.Combine(modPath, folderPath);
+            if (!Directory.Exists(fullPath))
+            {
+                return;
+            }
+
+            foreach (string file in Directory.GetFiles(fullPath))
+            {
+                string fileName = Path.GetFileName(file).Replace(".png", "").Replace(".jpg", "");
+                var texture = TextureUtils.LoadFromFile(file, 1, 1);
+                TargetDict.TryAdd(fileName, texture);
+
+            }
+        }
+
+        private static string GetFileMD5(string filePath)
+        {
+            if (!File.Exists(filePath)) return string.Empty;
+            using (var md5 = MD5.Create())
+            using (var stream = File.OpenRead(filePath))
+            {
+                var hashBytes = md5.ComputeHash(stream);
+                return BitConverter.ToString(hashBytes).Replace("-", "").ToLowerInvariant();
+            }
+        }
+    }
+}
+</file>
+
+<file path="Utils/Notify.cs">
+using EFT.Communications;
+
+namespace EternalCycleClient.Utils
+{
+    /// <summary>
+    /// 二次封装的游戏内提示方法
+    /// </summary>
+    internal class Notify
+    {
+        /// <summary>
+        /// 弹出一个通知
+        /// </summary>
+        public static void Message(string message, ENotificationIconType notificationType = ENotificationIconType.Default, bool isMute = false)
+        {
+            if (!isMute)
+            {
+                NotificationManager.DisplayMessageNotification(
+                    message,
+                    ENotificationDurationType.Default,
+                    notificationType,
+                    null
+                );
+            }
+        }
+        /// <summary>
+        /// 受全局静默影响的弹出通知
+        /// </summary>
+        public static void Message(string message, ENotificationIconType notificationType = ENotificationIconType.Default)
+        {
+            NotificationManager.DisplayMessageNotification(
+                message,
+                ENotificationDurationType.Default,
+                notificationType,
+                null
+            );
+        }
+        /// <summary>
+        /// 弹出一条普通的通知
+        /// </summary>
+        public static void Message(string message)
+        {
+            Message(message, ENotificationIconType.Default, false);
+        }
+        /// <summary>
+        /// 弹出一条警告的通知
+        /// </summary>
+        public static void Warning(string message)
+        {
+            Message(message, ENotificationIconType.Alert, false);
+        }
+        /// <summary>
+        /// 弹出一条金色的通知
+        /// </summary>
+        public static void Success(string message)
+        {
+            Message(message, ENotificationIconType.Quest, false);
+        }
+    }
+}
+</file>
+
+<file path="EternalCycleClient.csproj">
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.1</TargetFramework>
+    <Nullable>enable</Nullable>
+	  <OutDir>I:\TKF\BepInEx\plugins\EternalCycleClient</OutDir>
+	  <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+	  <AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
+  </PropertyGroup>
+
+	<ItemGroup>
+		<Reference Include="Comfort">
+			<HintPath>I:\TKF\EscapeFromTarkov_Data\Managed\Comfort.dll</HintPath>
+			<Private>False</Private>
+		</Reference>
+		<Reference Include="DissonanceVoip">
+			<HintPath>I:\TKF\EscapeFromTarkov_Data\Managed\DissonanceVoip.dll</HintPath>
+			<Private>False</Private>
+		</Reference>
+		<Reference Include="I:\TKF\BepInEx\core\0Harmony.dll">
+			<Private>False</Private>
+		</Reference>
+		<Reference Include="I:\TKF\BepInEx\core\BepInEx.dll">
+			<Private>False</Private>
+		</Reference>
+
+		<Reference Include="I:\TKF\BepInEx\plugins\spt\*.dll">
+			<Private>False</Private>
+		</Reference>
+
+		<Reference Include="I:\TKF\EscapeFromTarkov_Data\Managed\UnityEngine*.dll">
+			<Private>False</Private>
+		</Reference>
+
+		<Reference Include="I:\TKF\EscapeFromTarkov_Data\Managed\Assembly-CSharp.dll">
+			<Private>False</Private>
+		</Reference>
+
+		<Reference Include="ItemComponent.Types">
+			<HintPath>I:\TKF\EscapeFromTarkov_Data\Managed\ItemComponent.Types.dll</HintPath>
+			<Private>False</Private>
+		</Reference>
+
+		<Reference Include="Newtonsoft.Json">
+			<HintPath>I:\TKF\EscapeFromTarkov_Data\Managed\Newtonsoft.Json.dll</HintPath>
+			<Private>False</Private>
+		</Reference>
+
+		<Reference Include="Sirenix.Serialization">
+			<HintPath>I:\TKF\EscapeFromTarkov_Data\Managed\Sirenix.Serialization.dll</HintPath>
+			<Private>False</Private>
+		</Reference>
+
+		<Reference Include="System.Drawing.Design">
+			<HintPath>I:\TKF\EscapeFromTarkov_Data\Managed\System.Drawing.Design.dll</HintPath>
+			<Private>False</Private>
+		</Reference>
+
+		<Reference Include="System.Windows.Forms">
+			<HintPath>I:\TKF\EscapeFromTarkov_Data\Managed\System.Windows.Forms.dll</HintPath>
+			<Private>False</Private>
+		</Reference>
+	</ItemGroup>
+
+	<ItemGroup>
+		<None Include="locales\*.json">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="新文件夹\" />
+	</ItemGroup>
+
+</Project>
+</file>
+
+<file path="EternalCycleItem.cs">
+using Comfort.Common;
+using EFT;
+using EFT.Ballistics;
+using EFT.Communications;
+using EFT.HealthSystem;
+using EFT.Interactive;
+using EFT.InventoryLogic;
+using EFT.UI;
+using EternalCycleClient.Utils;
+using HarmonyLib;
+using Newtonsoft.Json;
+using SPT.Reflection.Patching;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
+using System.Security.Cryptography;
+using System.Text;
+using UnityEngine;
+using static EFT.InventoryLogic.InventoryEquipment;
+
+namespace EternalCycleClient
+{
+
+    public static class EternalCycleItem
+    {
+        //按钮文本
+        public static string EXACT_CLONE = "<color=#00D0FF><b>永恒之环 : 复制</b></color>";
+
+        public static string PERFECT_CLONE = "<color=#00D0FF><b>永恒之环 : 完美复制</b></color>";
+
+        public static string ITEMID = "94fabbbc70e5e0418be0efbc";
+
+        public static class StashFeature
+        {
+            public static class EternalCycleItemContext
+            {
+
+                public static Item generatedItem;
+
+                //物品实例
+                public static class ContextMenuMemory
+                {
+                    public static Item CurrentItem;
+                }
+
+
+                //捕获实例
+                [HarmonyPatch(typeof(ItemUiContext), nameof(ItemUiContext.ShowContextMenu))]
+                public class ItemUiContext_ShowContextMenu_Patch
+                {
+                    [HarmonyPrefix]
+                    public static void Prefix(ItemContext itemContext)
+                    {
+                        //Console.WriteLine(123);
+                        ContextMenuMemory.CurrentItem = itemContext?.Item;
+                    }
+                }
+
+
+                //显示按钮
+                [IgnoreAutoPatch]
+                public class SimpleContextMenu_Show_Patch : ModulePatch
+                {
+                    protected override MethodBase GetTargetMethod()
+                    {
+                        return typeof(SimpleContextMenu)
+                            .GetMethod(nameof(SimpleContextMenu.ShowMenu))
+                            .MakeGenericMethod(typeof(EItemInfoButton));
+                    }
+                    [PatchPrefix]
+                    private static void Prefix(ContextInteractions<EItemInfoButton> contextInteractions, Item item)
+                    {
+                        //hyw呢, 我的Patch呢???
+                        //Console.WriteLine(456);
+                        if (!(contextInteractions is BaseItemContextInteractions gclass)) return;
+
+                        var itemContext = gclass.ItemContext;
+                        if (itemContext.ViewType == EItemViewType.Inventory)
+                        {
+                            if (InGameStatus.InRaid)
+                            {
+                                return;
+                            }
+
+                            // Save as variable in case we need to add more checks later...
+                            var menuUI = Singleton<MenuUI>.Instance;
+
+                            if (menuUI.HideoutAreaTransferItemsScreen.isActiveAndEnabled
+                                || menuUI.HideoutMannequinEquipmentScreen.isActiveAndEnabled
+                                || menuUI.HideoutCircleOfCultistsScreen.isActiveAndEnabled)
+                            {
+                                return;
+                            }
+
+                            var parentItems = item.GetAllParentItems();
+                            if (parentItems.Any(x => x is InventoryEquipment))
+                            {
+                                return;
+                            }
+
+                            if (item.Parent.Container.ParentItem.TemplateId == "55d7217a4bdc2d86028b456d") // Fix for UI Fixes
+                            {
+                                return;
+                            }
+                            //物品检测
+                            //明天在永恒时序直接测试物品文件编码
+                            //Console.WriteLine(789);
+                            if (!PluginsCore.StashController.Profile.InventoryInfo.GetPlayerItems().Any(x => x.StringTemplateId == ITEMID)) return;
+                            //Console.WriteLine(000);
+                            // 1. 保留所有原有的条件过滤（局内、藏身处、装备、锁定等）
+                            // ...（你的原有代码，包括 InRaid、Hideout、Parent 等判断，此处省略）
+
+                            // 2. 获取动态菜单字典（如果为 null 则初始化）
+                            var dynamicInteractions = gclass._dynamicInteractions ?? new Dictionary<string, DynamicContextInteraction>();
+
+                            var wishIcon = EFT.Utilities.ResourcesCache.Pop<Sprite>("Characteristics/Icons/Disassemble");// + EItemInfoButton.AddToWishlist);
+
+
+                            dynamicInteractions["EXACT_CLONE"] = new EFT.UI.DynamicContextInteraction(
+                                "完全复制",                           // 菜单显示的文本
+                                EXACT_CLONE,                     // 第二个参数（通常也是标识，可重复显示文本）
+                                new Action(() =>                     // 点击后的回调
+                                {
+                                    var cloneItem = item.CloneItem().ReassignAllIds();
+                                    generatedItem = cloneItem;
+                                    ItemSpawner.CloneAndSpawnItemIntoStash(cloneItem);
+                                    NotificationManager.DisplayMessageNotification($"{ContextMenuMemory.CurrentItem.StringTemplateId} Name".Localized() + " 复制成功，请稍作等待或切回主菜单然后切回仓库");
+                                }),
+                                wishIcon                                 // 图标可为 null，也可加载
+                            );
+
+                            dynamicInteractions["PERFECT_CLONE"] = new EFT.UI.DynamicContextInteraction(
+                                "完美复制",
+                                PERFECT_CLONE,                     // 第二个参数（通常也是标识，可重复显示文本）
+                                new Action(() =>                     // 点击后的回调
+                                {
+                                    var cloneItem = item.CloneItem().ReassignAllIds().CleanAndResetItem(true);
+                                    generatedItem = cloneItem;
+                                    ItemSpawner.CloneAndSpawnItemIntoStash(cloneItem);
+                                    // 你的完美复制逻辑
+                                    NotificationManager.DisplayMessageNotification($"{ContextMenuMemory.CurrentItem.StringTemplateId} Name".Localized() + " 复制成功，请稍作等待或切回主菜单然后切回仓库");
+                                }),
+                                wishIcon                                 // 图标可为 null，也可加载
+                            );
+                        }
+                    }
+                }
+
+                //改变按钮渲染
+                //你妈呀是哪个天才把他妈的method0和method1改成同一个名字了?
+                [HarmonyPatch(typeof(InteractionButtonsContainer), nameof(InteractionButtonsContainer.CreateContextButton), new Type[] {
+                    typeof(string),
+                    typeof(string),
+                    typeof(SimpleContextMenuButton),
+                    typeof(RectTransform),
+                    typeof(Sprite),
+                    typeof(Action),
+                    typeof(Action),
+                    typeof(bool),
+                    typeof(bool)
+                })]
+                public class DynamicInteractionWishStylePatch
+                {
+                    [HarmonyPrefix]
+                    // 注意：这里的参数必须与原方法的参数名称一致！我们使用 ref 关键字来拦截并修改 template
+                    public static bool Prefix(InteractionButtonsContainer __instance, string key, string caption, ref SimpleContextMenuButton template)
+                    {
+                        // 假设原先的枚举在 ToString() 之后等于这里的字符串
+                        string exactCloneStr = EXACT_CLONE.ToString();
+                        string perfectCloneStr = PERFECT_CLONE.ToString();
+
+                        if (key == exactCloneStr || key == perfectCloneStr)
+                        {
+                            var traverse = Traverse.Create(__instance);
+                            var defaultButton = __instance._buttonTemplate;// traverse.Field<SimpleContextMenuButton>("_buttonTemplate").Value;
+                            var specifiedButtons = __instance._specifiedButtons; // traverse.Field<SimpleSpecifiedContextButtons>("_specifiedButtons").Value;
+
+                            var wishTemplate = specifiedButtons?.GetSpecifiedButton(EItemInfoButton.AddToWishlist, defaultButton) ?? defaultButton;
+
+                            // 直接将传入的 template 替换为我们的 wishTemplate
+                            template = wishTemplate;
+                        }
+
+                        // 返回 true，让原方法带着我们修改后的 template 继续往下执行正常逻辑
+                        // 这样就不需要再去手动反射调用 method_1 或者 method_5 了！
+                        return true;
+                    }
+                }
+
+                //捕获InvCtrler实例, 物品生成完整部分
+                //直接从Oracle抄就行了
+                //顺带补完前面的检测
+            }
+
+
+            public class ItemSpawner
+            {
+                public static async void CloneAndSpawnItemIntoStash(Item item)
+                {
+                    var controller = PluginsCore.StashController;
+                    if (controller == null || item == null) return;
+
+                    try
+                    {
+                        ItemAddress targetLocation = FindEmptyLocationInStash(controller, item);
+                        if (targetLocation == null)
+                        {
+                            Notify.Warning("仓库已满！");
+                            return;
+                        }
+                        var addResult = ItemManipulator.Add(
+                            item,
+                            targetLocation,
+                            controller,
+                            true //模拟， 防止冲突
+                        );
+
+                        if (addResult.Succeeded)
+                        {
+                            controller.TryRunNetworkTransaction(addResult);
+
+                            Notify.Message($"{item.Name.Localized()}发送成功");
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        //OracleCommon.ShowError(ex);
+                    }
+                }
+
+                //物品栏寻址算法
+                public static ItemAddress FindEmptyLocation(Player player, Item newItem)
+                {
+                    //划定物品栏有效区域(胸挂, 口袋, 背包)
+                    var equipment = player.Inventory.Equipment;
+                    EquipmentSlot[] slotsToCheck = {
+                EquipmentSlot.Pockets,
+                EquipmentSlot.TacticalVest,
+                EquipmentSlot.Backpack
+            };
+                    //遍历寻址
+                    foreach (var slotType in slotsToCheck)
+                    {
+                        var slot = equipment.GetSlot(slotType);
+                        if (slot.ContainedItem is CompoundItem containerItem)
+                        {
+                            foreach (var grid in containerItem.Grids)
+                            {
+                                //原版判断方法
+                                var addressInGrid = grid.FindLocationForItem(newItem);
+                                if (addressInGrid != null)
+                                {
+                                    return addressInGrid;
+                                }
+                            }
+                        }
+                    }
+                    return null;
+                }
+
+                /// <summary>
+                /// 战局外寻址：只找大仓库(Stash)，无视身上装备，绝对安全
+                /// </summary>
+                public static ItemAddress FindEmptyLocationInStash(InventoryController controller, Item newItem)
+                {
+                    if (controller?.Inventory?.Stash is CompoundItem stash)
+                    {
+                        foreach (var grid in stash.Grids)
+                        {
+                            var location = grid.FindLocationForItem(newItem);
+                            if (location != null)
+                            {
+                                return (ItemAddress)location;
+                            }
+                        }
+                    }
+                    return null;
+                }
+            }
+
+            public static class ItemSpawnStashPatch
+            {
+                //捕获invctrler
+                [HarmonyPatch(typeof(InventoryScreen), nameof(InventoryScreen.Show), new Type[]
+                {
+        typeof(IHealthController),
+        typeof(InventoryController),
+        typeof(EFT.Quests.QuestController),
+        typeof(EFT.Achievements.AchievementsController),
+        typeof(EFT.Prestige.PrestigeController),
+        typeof(CompoundItem),
+        typeof(EInventoryTab),
+        typeof(EFT.IEftSession),
+        typeof(ItemContext),
+        typeof(bool)
+                })]
+                public class InventoryScreen_Show_Patch
+                {
+                    [HarmonyPostfix]
+                    public static void Postfix(InventoryController controller)
+                    {
+                        if (controller != null)
+                        {
+                            PluginsCore.StashController = controller;
+                        }
+                        else
+                        {
+                            Console.WriteLine("[EternalCycle]由于未知原因，InventoryController为空！");
+                        }
+                    }
+                }
+
+                //桥接请求
+                [HarmonyPatch(typeof(ItemController), nameof(ItemController.ConvertOperationResultToOperation))]
+                public class Patch_ConvertOperation
+                {
+                    [HarmonyPrefix]
+                    public static bool Prefix(ItemController __instance, IOperationResult operationResult, ref EFT.InventoryLogic.Operations.AbstractOperation __result)
+                    {
+                        try
+                        {
+                            //没有物品直接跳过
+                            if (EternalCycleItemContext.generatedItem == null) return true;
+
+                            //确认物品
+                            Item targetItem = EternalCycleItemContext.generatedItem;
+
+                            //类名检查
+                            //3405是ADD
+                            //你妈的这段4.1是不是得改
+                            string operationTypeName = operationResult.GetType().Name;
+                            if (targetItem != null && operationTypeName == "AddResult")
+                            {
+                                ushort txId = __instance.GetAndIncrementNextOperationId();
+                                __result = new AddItemRouter.EternalCycleCloneOperationClass(txId, __instance, targetItem);
+                                Console.WriteLine($"[EternalCycle] {operationTypeName}桥接成功");
+
+                                //清空缓存
+
+                                //不再执行
+                                return false;
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            //OracleCommon.ShowError(ex);
+                        }
+
+                        //正常路由
+                        return true;
+                    }
+                }
+            }
+
+            public static class AddItemRouter
+            {
+
+                //路由层客户端通信协议
+                [Serializable]
+                public class EternalCycleCloneCommand : EFT.InventoryLogic.Operations.CommandWithOwners
+                {
+                    //路由请求类型
+                    [JsonProperty("Action")]
+                    public string Action = "SyncStashExtend";
+
+                    //物品数据
+                    [JsonProperty("stashData")]
+                    public JsonType.FlatItem[] ItemData;
+                }
+
+                //行为描述
+                public class EternalCycleCloneDescriptor : InventoryOperationDescriptor
+                {
+                    public Item ItemData;
+
+                    public override Diz.LanguageExtensions.OperationCreationResult<EFT.InventoryLogic.Operations.AbstractOperation> ToInventoryOperation(IPlayer player)
+                    {
+                        var operation = new EternalCycleCloneOperationClass(
+                            OperationId,
+                            player.InventoryController,
+                            ItemData
+                        );
+                        return operation;
+                    }
+                }
+
+                //行为执行体
+                public class EternalCycleCloneOperationClass : EFT.InventoryLogic.Operations.AbstractOperation
+                {
+                    private Item _itemToSpawn;
+
+                    //构造函数
+                    public EternalCycleCloneOperationClass(
+                    ushort id,
+                    ItemController controller,
+                    Item item)
+                    : base(id, controller)
+                    {
+                        _itemToSpawn = item;
+                    }
+
+                    public override void ExecuteInternal(Callback callback)
+                    {
+                        callback?.Invoke(SuccessfulResult.New);
+                    }
+
+                    //描述
+                    public override InventoryOperationDescriptor ToDescriptor()
+                    {
+                        return new EternalCycleCloneDescriptor
+                        {
+                            Operation = this,
+                            ItemData = _itemToSpawn
+                        };
+                    }
+
+                    //传递数据
+                    public override EFT.InventoryLogic.Operations.BaseInventoryCommand ToBaseInventoryCommand(string ownerId)
+                    {
+                        var itemFactory = Singleton<ItemFactory>.Instance;
+                        return new EternalCycleCloneCommand
+                        {
+                            ItemData = itemFactory.TreeToFlatItems(new Item[] { _itemToSpawn })
+                        };
+                    }
+
+                    //回收
+                    public override void Dispose()
+                    {
+                    }
+                }
+            }
+        }
+
+        public static class InRaidFeature
+        {
+            public static class GodMode
+            {
+                //无敌Patch
+                [HarmonyPatch(typeof(Player), nameof(Player.ApplyDamageInfo))]
+                public class GodMode_ApplyDamageInfoPatch
+                {
+                    public static bool Prefix(Player __instance)
+                    {
+                        if (!__instance.IsYourPlayer) return true;
+
+                        if (__instance?.Inventory?.CheckItem(ITEMID) ?? false)
+                        {
+                            return false;
+                        }
+
+                        return true;
+                    }
+                }
+
+                //阻止死亡Patch
+                [HarmonyPatch(typeof(ActiveHealthController), nameof(ActiveHealthController.Kill))]
+                public static class GodMode_AHCKillPatch
+                {
+                    public static bool Prefix(ActiveHealthController __instance)
+                    {
+                        if (!__instance.Player.IsYourPlayer) return true;
+
+                        if (__instance?.Player?.Inventory?.CheckItem(ITEMID) ?? false)
+                        {
+                            return false;
+                        }
+
+                        return true;
+                    }
+                }
+
+                //阻止部位损毁
+                [HarmonyPatch(typeof(ActiveHealthController), nameof(ActiveHealthController.DestroyBodyPart))]
+                public static class GodMode_AHCDestroyBodyPartPatch
+                {
+                    public static bool Prefix(ActiveHealthController __instance)
+                    {
+                        if (!__instance.Player.IsYourPlayer) return true;
+
+                        if (__instance?.Player?.Inventory?.CheckItem(ITEMID) ?? false)
+                        {
+                            return false;
+                        }
+
+                        return true;
+                    }
+                }
+
+                [HarmonyPatch(typeof(ActiveHealthController), nameof(ActiveHealthController.ChangeEnergy))]
+                public static class LockEnergyPatch
+                {
+                    public static bool Prefix(ActiveHealthController __instance, ref float value)
+                    {
+                        if (!__instance.Player.IsYourPlayer) return true;
+
+                        if (__instance?.Player?.Inventory?.CheckItem(ITEMID) ?? false)
+                        {
+                            value = 0f;
+                            return true;
+                        }
+                        return true;
+                    }
+                }
+
+                [HarmonyPatch(typeof(ActiveHealthController), nameof(ActiveHealthController.ChangeHydration))]
+                public static class LockHydrationPatch
+                {
+                    public static bool Prefix(ActiveHealthController __instance, ref float value)
+                    {
+                        if (!__instance.Player.IsYourPlayer) return true;
+
+                        if (__instance?.Player?.Inventory?.CheckItem(ITEMID) ?? false)
+                        {
+                            value = 0f;
+                            return true;
+                        }
+                        return true;
+                    }
+                }
+
+                /*
+
+                [HarmonyPatch(typeof(GClass3008), nameof(GClass3008.method_0))]
+                class EffectStartPatch
+                {
+                    static bool Prefix(GClass3008 __instance)
+                    {
+                        if (__instance.State != EEffectState.None)
+                            return true;
+
+                        var player = __instance.HealthController?.Player;
+                        if (player == null || !player.IsYourPlayer)
+                            return true;
+
+                        //尼基塔死妈妈了, 这里Inv初始化有问题
+                        //我修尼玛
+                        //if (!player?.Inventory?.CheckItem(ITEMID) ?? false)
+                            return true;
+
+                        // 如果只想免疫负面效果，可以在这里判断类型
+
+                        //return false;
+                    }
+                }
+                */
+            }
+
+            public static class InfiniteAmmo
+            {
+                //Patch
+                [HarmonyPatch(typeof(BallisticsCalculator), nameof(BallisticsCalculator.Shoot), new Type[] { typeof(Shot) })]
+                public class ShootPatch
+                {
+                    [HarmonyPostfix]
+                    public static void Postfix(Shot shot)
+                    {
+                        if (!PluginsCore.CorrectGameWorld || !Singleton<ItemFactory>.Instantiated)
+                        {
+                            return;
+                        }
+
+                        if (shot?.Player?.iPlayer?.IsYourPlayer != true)
+                        {
+                            return;
+                        }
+
+                        if (!shot?.Player?.iPlayer?.InventoryController?.Inventory?.CheckItem(ITEMID) ?? false)
+                        {
+                            return;
+                        }
+
+                        if (shot.Ammo == null || !(shot.Weapon is Weapon weapon))
+                        {
+                            return;
+                        }
+
+                        Magazine currentMagazine = weapon.GetCurrentMagazine();
+
+                        //提取武器弹药
+                        if (currentMagazine != null)
+                        {
+                            //转轮
+                            if (currentMagazine is CylinderMagazine cylinderMag)
+                            {
+                                foreach (Slot camora in cylinderMag.Camoras)
+                                {
+                                    if (camora.ContainedItem == null) camora.Add(CreateAmmo(shot.Ammo), false, true);
+                                }
+                            }
+                            //弹匣
+                            else if (currentMagazine.Cartridges != null)
+                            {
+                                if (currentMagazine.Cartridges.Count < currentMagazine.Cartridges.MaxCount) currentMagazine.Cartridges.Add(CreateAmmo(shot.Ammo), false);
+                            }
+                        }
+                        else
+                        {
+                            //枪膛
+                            foreach (Slot chamber in weapon.Chambers)
+                            {
+                                if (chamber.ContainedItem == null) chamber.Add(CreateAmmo(shot.Ammo), false, true);
+                            }
+                        }
+                    }
+
+                    /// <summary>
+                    /// 复制子弹
+                    /// </summary>
+                    /// <param name="ammo">子弹实例</param>
+                    /// <returns>子弹实例</returns>
+                    private static Item CreateAmmo(Item ammo)
+                    {
+                        //重新生成ID
+                        string fakeId = ItemInstanceHelper.GenerateSafeHexId(ammo.Template.StringId, $"{DateTime.Now.Ticks}_{Guid.NewGuid()}");// new MongoID();
+                        return Singleton<ItemFactory>.Instance.CreateItem(fakeId, ammo.TemplateId, null);
+                    }
+                }
+            }
+        }
+
+        public class InfinityStamina
+        {
+            /// <summary>
+            /// 耐力锁定脚本
+            /// </summary>
+            public class InfinityStaminaComponent : MonoBehaviour
+            {
+                private Player localPlayer;
+                private void Awake()
+                {
+                    //查找玩家组件
+                    localPlayer = gameObject.GetComponent<Player>();
+                }
+                private void Update()
+                {
+                    //防御
+                    if (localPlayer == null) return;
+                    bool isInfinite = localPlayer.Inventory.CheckItem(ITEMID);
+                    if (localPlayer.Physical != null)
+                    {
+                        //定义开关
+                        //赋值
+                        if (localPlayer.Physical.Stamina != null)
+                        {
+                            localPlayer.Physical.Stamina.ForceMode = isInfinite;
+                        }
+
+                        if (localPlayer.Physical.HandsStamina != null)
+                        {
+                            localPlayer.Physical.HandsStamina.ForceMode = isInfinite;
+                        }
+
+                        if (localPlayer.Physical.Oxygen != null)
+                        {
+                            localPlayer.Physical.Oxygen.ForceMode = isInfinite;
+                        }
+                    }
+                    if (isInfinite)
+                    {
+                        var hc = localPlayer.ActiveHealthController;
+                        if (hc != null)
+                        {
+                            hc.RestoreFullHealth();
+                            hc.FullRestoreBodyPart(EBodyPart.Head);
+                            hc.FullRestoreBodyPart(EBodyPart.Chest);
+                            hc.FullRestoreBodyPart(EBodyPart.Stomach);
+                            hc.FullRestoreBodyPart(EBodyPart.LeftArm);
+                            hc.FullRestoreBodyPart(EBodyPart.RightArm);
+                            hc.FullRestoreBodyPart(EBodyPart.LeftLeg);
+                            hc.FullRestoreBodyPart(EBodyPart.RightLeg);
+                            hc.RemoveNegativeEffects(EBodyPart.Head);
+                            hc.RemoveNegativeEffects(EBodyPart.Chest);
+                            hc.RemoveNegativeEffects(EBodyPart.Stomach);
+                            hc.RemoveNegativeEffects(EBodyPart.LeftArm);
+                            hc.RemoveNegativeEffects(EBodyPart.RightArm);
+                            hc.RemoveNegativeEffects(EBodyPart.LeftLeg);
+                            hc.RemoveNegativeEffects(EBodyPart.RightLeg);
+                            hc.RemoveMisfireEffect();
+                        }
+                    }
+                }
+            }
+
+            [HarmonyPatch(typeof(GameWorld), nameof(GameWorld.OnGameStarted))]
+            public class GameStartPatch
+            {
+                [HarmonyPostfix]
+                public static void Postfix(GameWorld __instance)
+                {
+                    //挂载脚本
+                    __instance.MainPlayer.gameObject.AddComponent<InfinityStaminaComponent>();
+                }
+            }
+        }
+
+        public class InfinityWeight
+        {
+            //无限负重Patch
+            [HarmonyPatch(typeof(InventoryEquipment), nameof(InventoryEquipment.GetTotalWeight))]
+            public class InfinityWeightPatch
+            {
+                public static bool Prefix(InventoryEquipment __instance, IEnumerable<Slot> slots, ref float __result)
+                {
+                    if ((PluginsCore.StashController != null && PluginsCore.StashController.Inventory.CheckItem(ITEMID)) || (PluginsCore.CorrectGameWorld != null && PluginsCore.CorrectPlayer != null && PluginsCore.CorrectPlayer.Inventory.CheckItem(ITEMID)))
+                    {
+                        //直接不计重量
+                        __result = 0f;
+                        return false;
+                    }
+                    return true;
+                }
+            }
+            [HarmonyPatch(typeof(CG_Class2408), nameof(CG_Class2408.method_1))]
+            public class InfinityWeightPatch2
+            {
+                public static bool Prefix(CG_Class2408 __instance, Slot slot, ref float __result)
+                {
+                    if ((PluginsCore.StashController != null && PluginsCore.StashController.Inventory.CheckItem(ITEMID)) || (PluginsCore.CorrectGameWorld != null && PluginsCore.CorrectPlayer != null && PluginsCore.CorrectPlayer.Inventory.CheckItem(ITEMID)))
+                    {
+                        //直接不计重量
+                        __result = 0f;
+                        return false;
+                    }
+                    return true;
+                }
+            }
+        }
+        public static class NoMalfunction
+        {
+            //Patch
+            [HarmonyPatch(typeof(Player.FirearmController), nameof(Player.FirearmController.GetMalfunctionState))]
+            public class PlayerWeaponNeverJamPatch
+            {
+                static bool Prefix(Player.FirearmController __instance, ref Weapon.EMalfunctionState __result, ref Weapon.EMalfunctionSource malfunctionSource)
+                {
+                    //判断是否为自己
+                    if (__instance != null && PluginsCore.CorrectPlayer != null && __instance == PluginsCore.CorrectPlayer.HandsController && PluginsCore.CorrectPlayer.Inventory.CheckItem(ITEMID))
+                    {
+                        //ref结果直接改为无故障
+                        __result = Weapon.EMalfunctionState.None;
+
+                        //ref故障来源为调试命令
+                        malfunctionSource = Weapon.EMalfunctionSource.ConsoleCommand;
+
+                        //阻止原方法执行
+                        return false;
+                    }
+                    return true;
+                }
+            }
+        }
+
+        public static class NoWeaponDurabilityCost
+        {
+            //Patch
+            [HarmonyPatch(typeof(Weapon), nameof(Weapon.GetDurabilityLossOnShot))]
+            public class PlayerWeaponNeverJamPatch
+            {
+                static bool Prefix(Weapon __instance, float ammoBurnRatio, float overheatFactor, float skillWeaponTreatmentFactor, out float modsBurnRatio, ref float __result)
+                {
+                    //正常发热动画
+                    modsBurnRatio = 1f;
+                    if (PluginsCore.CorrectPlayer != null && PluginsCore.CorrectPlayer.Inventory.CheckItem(ITEMID))
+                    {
+                        //不掉耐久
+                        __result = 0f;
+                        return false;
+                    }
+                    return true;
+                }
+            }
+        }
+
+        public static class TelekinisisUnlock
+        {
+            //拦截互动菜单
+            [HarmonyPatch(typeof(InteractionContextHelper), nameof(InteractionContextHelper.GetAvailableActions), new Type[] { typeof(GamePlayerOwner), typeof(IInteractive) })]
+            public class GetActionsClassPatch
+            {
+                public static void Postfix(GamePlayerOwner owner, IInteractive interactive, ref EFT.UI.AvailableInteractionState __result)
+                {
+                    if (interactive == null || __result == null || PluginsCore.CorrectPlayer == null || !PluginsCore.CorrectPlayer.Inventory.CheckItem(ITEMID)) return;
+
+                    //查找Component
+                    Component comp = interactive as Component;
+                    if (comp == null) return;
+
+                    //可交互物体
+                    WorldInteractiveObject wio = comp.GetComponent<WorldInteractiveObject>() ?? comp.GetComponentInParent<WorldInteractiveObject>();
+                    if (wio == null) return;
+
+                    //门(只针对门)
+                    if (wio.DoorState == EDoorState.Locked)
+                    {
+                        //如果没有解锁选项, 就加一个
+                        bool hasUnlock = __result.Actions.Any(x => x.Name == "Unlock" || x.Name.Contains("Unlock"));
+                        if (!hasUnlock)
+                        {
+                            //通过Insert让它变为首选项
+                            __result.Actions.Insert(0, new InteractionAction
+                            {
+                                Name = "Unlock",
+                                Action = new Action(() =>
+                                {
+                                    //防止Sain空指针
+                                    wio.SetUser(owner.Player);
+                                    wio.DoorState = EDoorState.Shut;
+                                }),
+                                Disabled = false
+                            });
+                        }
+                    }
+                }
+            }
+        }
+    }
+    public static class ItemInstanceHelper
+    {
+        //快速哈希预缓存
+        [ThreadStatic]
+        private static SHA256 _sha256;
+        private static readonly char[] HexLookup = "0123456789abcdef".ToCharArray();
+
+        public static bool CheckItem(this Inventory inventory, string itemid)
+        {
+            return inventory.GetPlayerItems().Any(x => x.StringTemplateId == itemid);
+        }
+
+        /// <summary>
+        /// 拓展方法, 对物品树进行清洗, 将其变为独立的实例
+        /// </summary>
+        public static Item ReassignAllIds(this Item clonedItem)
+        {
+            //生成salt
+            var operationSalt = $"{Guid.NewGuid():N}-{DateTime.Now.Ticks}";
+            //遍历整个物品树
+            foreach (var item in clonedItem.GetAllItems())
+            {
+                //自带防御的ID读取
+                string originalId = string.IsNullOrEmpty(item.Id) ? Guid.NewGuid().ToString("N") : item.Id;
+                //加盐生成MongoId, 每一次使用统一的盐, 从而做到从单一实例复制无数个独立实例
+                string newSafeId = GenerateSafeHexId(originalId, operationSalt);
+                //通过回调设置Id
+                ForceSetId(item, newSafeId);
+            }
+            return clonedItem;
+        }
+
+        /// <summary>
+        /// 使用sha256生成符合MongoId规范的HEX字符串
+        /// </summary>
+        public static string GenerateSafeHexId(string originalId, string salt)
+        {
+            //没什么好注释的, 这种东西在新时代可以直接丢给AI解释了
+            if (_sha256 == null) _sha256 = SHA256.Create();
+            string input = originalId + salt;
+            byte[] hashBytes = _sha256.ComputeHash(Encoding.UTF8.GetBytes(input));
+            char[] hexBuffer = new char[24];
+            for (int i = 0; i < 12; i++)
+            {
+                byte b = hashBytes[i];
+                hexBuffer[i * 2] = HexLookup[b >> 4];
+                hexBuffer[i * 2 + 1] = HexLookup[b & 0x0F];
+            }
+            return new string(hexBuffer);
+        }
+
+        /// <summary>
+        /// 通过反射回调字段修改Id
+        /// </summary>
+        private static void ForceSetId(Item item, string newId)
+        {
+            if (item == null) return;
+            var itemType = typeof(Item);
+            //直接反射底层回调字段写Id
+            FieldInfo backingField = itemType.GetField("<Id>k__BackingField", BindingFlags.NonPublic | BindingFlags.Instance)
+                                  ?? itemType.GetField("_id", BindingFlags.NonPublic | BindingFlags.Instance);
+            if (backingField != null)
+            {
+                backingField.SetValue(item, newId);
+            }
+            else
+            {
+                //回退(其实完全没必要)
+                PropertyInfo idProp = itemType.GetProperty("Id", BindingFlags.Public | BindingFlags.Instance);
+                if (idProp != null && idProp.CanWrite)
+                {
+                    idProp.SetValue(item, newId);
+                }
+            }
+        }
+
+        /// <summary>
+        /// 拓展方法, 清洗物品状态, 耐久度, 带勾....
+        /// </summary>
+        public static Item CleanAndResetItem(this Item clonedItem, bool fir)
+        {
+            //遍历物品树, 对整个树进行操作
+            foreach (var item in clonedItem.GetAllItems())
+            {
+                //每个节点都要带勾
+                //子弹会在游戏内部处理, 因此无需特殊处理
+                //同步带勾状态而不是只有fir带勾非fir不同步
+                item.SpawnedInSession = fir;
+                //武器, 护甲....(可维修物品)
+                if (item.TryGetItemComponent<RepairableComponent>(out var repairable))
+                {
+                    //恢复耐久上限和当前耐久
+                    repairable.MaxDurability = repairable.TemplateDurability;
+                    if (repairable.Durability < repairable.TemplateDurability)
+                    {
+                        repairable.Durability = repairable.TemplateDurability;
+                    }
+                }
+                //刷新钥匙和钥匙卡的使用次数记录
+                if (item.TryGetItemComponent<KeyComponent>(out var key))
+                {
+                    if (key.NumberOfUsages > 0)
+                    {
+                        key.NumberOfUsages = 0;
+                    }
+                }
+                //恢复医疗物品的耐久度
+                if (item.TryGetItemComponent<MedKitComponent>(out var medkit))
+                {
+                    if (medkit.HpResource < medkit.MaxHpResource)
+                    {
+                        medkit.HpResource = medkit.MaxHpResource;
+                    }
+                }
+                //恢复食物和饮料的耐久度
+                if (item.TryGetItemComponent<FoodDrinkComponent>(out var food))
+                {
+                    if (
+                    food.HpPercent < food.MaxResource)
+                    {
+                        food.HpPercent = food.MaxResource;
+                    }
+                }
+                //恢复过滤器, 燃料桶的耐久度
+                if (item.TryGetItemComponent<ResourceComponent>(out var resource))
+                {
+                    if (resource.Value < resource.MaxResource)
+                    {
+
+                        resource.Value = resource.MaxResource;
+                    }
+                }
+                //修复面罩的弹孔和裂痕
+                if (item.TryGetItemComponent<FaceShieldComponent>(out var faceShield))
+                {
+                    faceShield.Hits = 0;
+                    faceShield.HitSeed = 0;
+                }
+                //清除武器的故障状态
+                if (item is Weapon weapon)
+                {
+                    weapon.MalfState.State = Weapon.EMalfunctionState.None;
+                }
+                //重新为维修包充能
+                if (item.TryGetItemComponent<RepairKitComponent>(out var repairKit))
+                {
+                    if (repairKit.Resource < repairKit._template.MaxRepairResource)
+                    {
+                        repairKit.Resource = repairKit._template.MaxRepairResource;
+                    }
+                }
+            }
+            return clonedItem;
+        }
+    }
+}
+</file>
+
+<file path="PluginsCore.cs">
+using BepInEx;
+using EFT;
+using EFT.InventoryLogic;
+using HarmonyLib;
+using System.IO;
+using System.Reflection;
+using EternalCycleClient.Utils;
+
+namespace EternalCycleClient
+{
+    [BepInPlugin(PluginsInfo.GUID, PluginsInfo.NAME, PluginsInfo.VERSION)]
+    public class PluginsCore : BaseUnityPlugin
+    {
+        public static Player CorrectPlayer { get; set; }
+        public static string CorrectGroupId { get; set; }
+        public static GameWorld CorrectGameWorld { get; set; }
+        public static InventoryController StashController { get; set; }
+
+        public static string dllPath = Assembly.GetExecutingAssembly().Location;
+        public static string pluginDir = Path.GetDirectoryName(dllPath);
+        public void Awake()
+        {
+            var harmony = new Harmony(PluginsInfo.GUID);
+            harmony.PatchAll();
+            new EternalCycleItem.StashFeature.EternalCycleItemContext.SimpleContextMenu_Show_Patch().Enable();
+            LocaleManager.Initialize(Config);
+            ClientResourceManager.LoadResources("/eternalcycle/loadriglayout", pluginDir, "resource/cache/bundle");
+            ClientResourceManager.LoadResources("/eternalcycle/loadsloticon", pluginDir, "resource/cache/sloticon");
+            ClientResourceManager.LoadResources("/eternalcycle/loaddecoicon", pluginDir, "resource/cache/decoicon");
+            ClientResourceManager.LoadResources("/eternalcycle/loadtarget", pluginDir, "resource/cache/target");
+            ClientResourceManager.LoadRigLayout(pluginDir, "resource/cache/bundle");
+            ClientResourceManager.LoadSlotIcon(pluginDir, "resource/cache/sloticon");
+            ClientResourceManager.LoadDecoIcon(pluginDir, "resource/cache/decoicon");
+            ClientResourceManager.LoadTarget(pluginDir, "resource/cache/target");
+            ClientResourceManager.LoadVoice("/eternalcycle/loadvoice");
+        }
+
+        public void Start()
+        {
+        }
+
+        public void Update()
+        {
+        }
+
+        public void OnGUI()
+        {
+        }
+    }
+
+    //游戏启动Patch, 用于捕获关键实例
+    [HarmonyPatch(typeof(GameWorld), "OnGameStarted")]
+    public class GameStartPatch
+    {
+        [HarmonyPostfix]
+        public static void Postfix(GameWorld __instance)
+        {
+            PluginsCore.CorrectGameWorld = __instance;
+            PluginsCore.CorrectPlayer = __instance.MainPlayer;
+            PluginsCore.CorrectGroupId = __instance.MainPlayer.Profile?.Info?.GroupId ?? "";
+        }
+    }
+}
+</file>
+
+<file path="PluginsInfo.cs">
+namespace EternalCycleClient
+{
+    public class PluginsInfo
+    {
+        public const string GUID = "eft.hiddenhiraigi.eternalcycleclient";
+        public const string NAME = "EternalCycleClient";
+        public const string VERSION = "1.2.0";
+    }
+}
+</file>
+
+</files>

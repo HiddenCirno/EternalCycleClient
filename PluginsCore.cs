@@ -33,6 +33,7 @@ namespace EternalCycleClient
             ClientResourceManager.LoadDecoIcon(pluginDir, "resource/cache/decoicon");
             ClientResourceManager.LoadTarget(pluginDir, "resource/cache/target");
             ClientResourceManager.LoadVoice("/eternalcycle/loadvoice");
+            QuestZoneManager.FetchAndCacheZones();
         }
 
         public void Start()
@@ -58,6 +59,7 @@ namespace EternalCycleClient
             PluginsCore.CorrectGameWorld = __instance;
             PluginsCore.CorrectPlayer = __instance.MainPlayer;
             PluginsCore.CorrectGroupId = __instance.MainPlayer.Profile?.Info?.GroupId ?? "";
+            QuestZoneManager.CreateZonesForCurrentMap(__instance);
         }
     }
 }
